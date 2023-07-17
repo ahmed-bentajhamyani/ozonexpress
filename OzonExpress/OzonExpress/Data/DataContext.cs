@@ -17,6 +17,7 @@ namespace OzonExpress.Data
         public DbSet<Vente> Ventes { get; set; }
         public DbSet<Ville> Villes { get; set; }
         public DbSet<Tarif> Tarifs { get; set; }
+        public DbSet<Commentaire> Commentaires { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

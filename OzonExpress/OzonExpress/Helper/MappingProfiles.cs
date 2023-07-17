@@ -32,6 +32,9 @@ namespace OzonExpress.Helper
 
             CreateMap<Ville, VilleDto>();
             CreateMap<VilleDto, Ville>();
+
+            CreateMap<Commentaire, CommentaireDto>();
+            CreateMap<CommentaireDto, Commentaire>();
         }
     }
 }

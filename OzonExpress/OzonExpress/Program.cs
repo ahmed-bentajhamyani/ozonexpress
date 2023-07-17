@@ -19,6 +19,7 @@ builder.Services.AddScoped<IPanierRepository, PanierRepository>();
 builder.Services.AddScoped<ITarifRepository, TarifRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IVilleRepository, VilleRepository>();
+builder.Services.AddScoped<ICommentaireRepository, CommentaireRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
