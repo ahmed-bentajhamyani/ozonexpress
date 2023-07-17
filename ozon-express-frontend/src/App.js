@@ -1,23 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/partials/Navbar';
+import Hero from './components/Hero';
+import Services from './components/Services';
+import FAQs from './components/FAQs';
+import Tarifs from './components/Tarifs';
+import Agences from './components/Agences';
+import Market from './components/Market';
+import Blogs from './components/Blogs';
+import Testimonials from './components/Testimonials';
+import Footer from './components/partials/Footer';
+import Panier from './components/Panier';
+import { useState } from 'react';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id='home' className="font-poppins">
+      <Navbar />
+
+      <section className="min-h-screen md:min-h-fit">
+        <Hero />
+      </section>
+
+      <Services />
+      <FAQs />
+      <Tarifs />
+      <Agences />
+      <Market />
+      <Blogs />
+      <Testimonials />
+      <Footer />
     </div>
   );
 }
