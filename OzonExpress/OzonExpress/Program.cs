@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(); // Make sure you call this previous to AddMvc
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
@@ -38,6 +39,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(
+    options => options.WithOrigins("http://localhost:3000").AllowAnyMethod()
+);
 
 app.UseAuthorization();
 
