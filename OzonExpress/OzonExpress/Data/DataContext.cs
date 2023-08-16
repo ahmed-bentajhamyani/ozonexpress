@@ -8,6 +8,7 @@ namespace OzonExpress.Data
         public DataContext(DbContextOptions option): base(option) { }
 
         public DbSet<Article> Articles { get; set; }
+        public DbSet<Categorie> Categories { get; set; }
         public DbSet<ArticlePanier> ArticlePaniers { get; set; }
         public DbSet<ArticleVente> ArticleVentes { get; set; }
         public DbSet<Blog> Blogs { get; set; }
@@ -15,7 +16,7 @@ namespace OzonExpress.Data
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<Panier> Paniers { get; set; }
         public DbSet<Vente> Ventes { get; set; }
-        public DbSet<Ville> Villes { get; set; }
+        public DbSet<Agence> Agences { get; set; }
         public DbSet<Tarif> Tarifs { get; set; }
         public DbSet<Commentaire> Commentaires { get; set; }
 
@@ -43,16 +44,22 @@ namespace OzonExpress.Data
                 .WithMany(av => av.ArticleVentes)
                 .HasForeignKey(v => v.VenteId);
 
+            modelBuilder.Entity<Article>()
+                .HasOne(a => a.Categorie)
+                .WithMany(c => c.Articles)
+                .HasForeignKey(a => a.CategorieId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
             modelBuilder.Entity<Tarif>()
-                .HasOne(t => t.VilleDep)
-                .WithMany(v => v.Tarifs)
-                .HasForeignKey(t => t.VilleDepId)
+                .HasOne(t => t.AgenceDep)
+                .WithMany(a => a.Tarifs)
+                .HasForeignKey(t => t.AgenceDepId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Tarif>()
-                .HasOne(t => t.VilleArr)
+                .HasOne(t => t.AgenceArr)
                 .WithMany()
-                .HasForeignKey(t => t.VilleArrId)
+                .HasForeignKey(t => t.AgenceArrId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

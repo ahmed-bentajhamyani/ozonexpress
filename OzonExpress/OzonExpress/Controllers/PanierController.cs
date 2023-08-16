@@ -50,7 +50,7 @@ namespace OzonExpress.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreatePanier([FromBody] PanierDto panierCreate)
+        public IActionResult CreatePanier([FromForm] PanierDto panierCreate)
         {
             if (panierCreate == null)
                 return BadRequest(ModelState);
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult AddToPanier(int panierId, [FromQuery] int articleId, [FromQuery] int quantite)
+        public IActionResult AddToPanier(int panierId, [FromForm] int articleId, [FromForm] int quantite)
         {
             if (!_panierRepository.PanierExists(panierId))
                 return NotFound();
@@ -87,14 +87,14 @@ namespace OzonExpress.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully updated");
+            return Ok("Successfully added to cart");
         }
 
-        [HttpDelete("deletefrom/{panierId}")]
+        [HttpPut("deletefrom/{panierId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteFromPanier(int panierId, [FromQuery] int articleId)
+        public IActionResult DeleteFromPanier(int panierId, [FromForm] int articleId)
         {
             if (!_panierRepository.PanierExists(panierId))
             {
@@ -111,7 +111,7 @@ namespace OzonExpress.Controllers
                 ModelState.AddModelError("", "Something went wrong deleting Panier");
             }
 
-            return Ok("Successfully deleted");
+            return Ok("Successfully deleted from cart");
         }
     }
 }

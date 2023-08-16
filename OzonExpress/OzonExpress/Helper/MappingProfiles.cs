@@ -12,6 +12,9 @@ namespace OzonExpress.Helper
             CreateMap<Article, ArticleDto>();
             CreateMap<ArticleDto, Article>();
 
+            CreateMap<Categorie, CategorieDto>();
+            CreateMap<CategorieDto, Categorie>();
+
             CreateMap<Blog, BlogDto>();
             CreateMap<BlogDto, Blog>();
 
@@ -30,8 +33,8 @@ namespace OzonExpress.Helper
             CreateMap<Panier, PanierDto>();
             CreateMap<PanierDto, Panier>();
 
-            CreateMap<Ville, VilleDto>();
-            CreateMap<VilleDto, Ville>();
+            CreateMap<Agence, AgenceDto>();
+            CreateMap<AgenceDto, Agence>();
 
             CreateMap<Commentaire, CommentaireDto>();
             CreateMap<CommentaireDto, Commentaire>();

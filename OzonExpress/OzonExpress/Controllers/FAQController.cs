@@ -50,7 +50,7 @@ namespace OzonExpress.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateFAQ([FromBody] FAQDto faqCreate)
+        public IActionResult CreateFAQ([FromForm] FAQDto faqCreate)
         {
             if (faqCreate == null)
                 return BadRequest(ModelState);
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateFAQ(int faqId, [FromBody] FAQDto updatedFAQ)
+        public IActionResult UpdateFAQ(int faqId, [FromForm] FAQDto updatedFAQ)
         {
             if (updatedFAQ == null)
                 return BadRequest(ModelState);

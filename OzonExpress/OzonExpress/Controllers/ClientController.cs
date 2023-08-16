@@ -50,7 +50,7 @@ namespace OzonExpress.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateClient([FromBody] ClientDto clientCreate)
+        public IActionResult CreateClient([FromForm] ClientDto clientCreate)
         {
             if (clientCreate == null)
                 return BadRequest(ModelState);
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClient(int clientId, [FromBody] ClientDto updatedClient)
+        public IActionResult UpdateClient(int clientId, [FromForm] ClientDto updatedClient)
         {
             if (updatedClient == null)
                 return BadRequest(ModelState);

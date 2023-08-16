@@ -50,7 +50,7 @@ namespace OzonExpress.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateTarif([FromBody] TarifDto tarifCreate)
+        public IActionResult CreateTarif([FromForm] TarifDto tarifCreate)
         {
             if (tarifCreate == null)
                 return BadRequest(ModelState);
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateTarif(int tarifId, [FromBody] TarifDto updatedTarif)
+        public IActionResult UpdateTarif(int tarifId, [FromForm] TarifDto updatedTarif)
         {
             if (updatedTarif == null)
                 return BadRequest(ModelState);

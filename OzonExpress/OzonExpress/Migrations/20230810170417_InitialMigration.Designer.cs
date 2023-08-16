@@ -12,8 +12,8 @@ using OzonExpress.Data;
 namespace OzonExpress.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230713095822_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230810170417_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace OzonExpress.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OzonExpress.Models.Article", b =>
+            modelBuilder.Entity("OzonExpress.Models.Agence", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,22 +33,36 @@ namespace OzonExpress.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Nom")
+                    b.Property<string>("Ville")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<float>("Prix")
+                    b.HasKey("Id");
+
+                    b.ToTable("Agences");
+                });
+
+            modelBuilder.Entity("OzonExpress.Models.Article", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<float?>("Prix")
                         .HasColumnType("real");
 
-                    b.Property<int>("Quantite")
+                    b.Property<int?>("Quantite")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -94,25 +108,22 @@ namespace OzonExpress.Migrations
 
             modelBuilder.Entity("OzonExpress.Models.Blog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Article")
-                        .IsRequired()
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<DateTime>("DateAjout")
+                    b.Property<DateTime?>("DateAjout")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Titre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
@@ -122,31 +133,50 @@ namespace OzonExpress.Migrations
 
             modelBuilder.Entity("OzonExpress.Models.Client", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("OzonExpress.Models.FAQ", b =>
+            modelBuilder.Entity("OzonExpress.Models.Commentaire", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Commentaires");
+                });
+
+            modelBuilder.Entity("OzonExpress.Models.FAQ", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Question")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Reponse")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
@@ -156,11 +186,11 @@ namespace OzonExpress.Migrations
 
             modelBuilder.Entity("OzonExpress.Models.Panier", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.HasKey("Id");
 
@@ -169,43 +199,45 @@ namespace OzonExpress.Migrations
 
             modelBuilder.Entity("OzonExpress.Models.Tarif", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
-                    b.Property<int>("VilleArrId")
+                    b.Property<int?>("AgenceArrId")
                         .HasColumnType("int");
 
-                    b.Property<int>("VilleDepId")
+                    b.Property<int?>("AgenceDepId")
                         .HasColumnType("int");
+
+                    b.Property<float?>("Cout")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("VilleArrId");
+                    b.HasIndex("AgenceArrId");
 
-                    b.HasIndex("VilleDepId");
+                    b.HasIndex("AgenceDepId");
 
                     b.ToTable("Tarifs");
                 });
 
             modelBuilder.Entity("OzonExpress.Models.Vente", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
-                    b.Property<int>("ClientId")
+                    b.Property<int?>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -213,23 +245,6 @@ namespace OzonExpress.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Ventes");
-                });
-
-            modelBuilder.Entity("OzonExpress.Models.Ville", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("NomVille")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Villes");
                 });
 
             modelBuilder.Entity("OzonExpress.Models.ArticlePanier", b =>
@@ -270,34 +285,44 @@ namespace OzonExpress.Migrations
                     b.Navigation("Vente");
                 });
 
+            modelBuilder.Entity("OzonExpress.Models.Commentaire", b =>
+                {
+                    b.HasOne("OzonExpress.Models.Client", "Client")
+                        .WithMany("Commentaires")
+                        .HasForeignKey("ClientId");
+
+                    b.Navigation("Client");
+                });
+
             modelBuilder.Entity("OzonExpress.Models.Tarif", b =>
                 {
-                    b.HasOne("OzonExpress.Models.Ville", "VilleArr")
+                    b.HasOne("OzonExpress.Models.Agence", "AgenceArr")
                         .WithMany()
-                        .HasForeignKey("VilleArrId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("AgenceArrId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("OzonExpress.Models.Ville", "VilleDep")
+                    b.HasOne("OzonExpress.Models.Agence", "AgenceDep")
                         .WithMany("Tarifs")
-                        .HasForeignKey("VilleDepId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("AgenceDepId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("VilleArr");
+                    b.Navigation("AgenceArr");
 
-                    b.Navigation("VilleDep");
+                    b.Navigation("AgenceDep");
                 });
 
             modelBuilder.Entity("OzonExpress.Models.Vente", b =>
                 {
                     b.HasOne("OzonExpress.Models.Client", "Client")
                         .WithMany("Ventes")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("OzonExpress.Models.Agence", b =>
+                {
+                    b.Navigation("Tarifs");
                 });
 
             modelBuilder.Entity("OzonExpress.Models.Article", b =>
@@ -309,6 +334,8 @@ namespace OzonExpress.Migrations
 
             modelBuilder.Entity("OzonExpress.Models.Client", b =>
                 {
+                    b.Navigation("Commentaires");
+
                     b.Navigation("Ventes");
                 });
 
@@ -320,11 +347,6 @@ namespace OzonExpress.Migrations
             modelBuilder.Entity("OzonExpress.Models.Vente", b =>
                 {
                     b.Navigation("ArticleVentes");
-                });
-
-            modelBuilder.Entity("OzonExpress.Models.Ville", b =>
-                {
-                    b.Navigation("Tarifs");
                 });
 #pragma warning restore 612, 618
         }

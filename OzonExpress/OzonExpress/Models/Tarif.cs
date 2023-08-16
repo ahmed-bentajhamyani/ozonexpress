@@ -4,11 +4,11 @@ namespace OzonExpress.Models
 {
     public class Tarif
     {
-        public int Id { get; set; }
-        public float Cout { get; set; }
-        public int VilleDepId { get; set; }
-        public Ville VilleDep { get; set; }
-        public int VilleArrId { get; set; }
-        public Ville VilleArr { get; set; }
+        public int? Id { get; set; }
+        public int? AgenceDepId { get; set; }
+        public Agence? AgenceDep { get; set; }
+        public int? AgenceArrId { get; set; }
+        public Agence? AgenceArr { get; set; }
+        public float? Cout { get; set; }
     }
 }

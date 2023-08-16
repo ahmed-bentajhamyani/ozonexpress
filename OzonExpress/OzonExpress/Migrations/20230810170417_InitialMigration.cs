@@ -6,22 +6,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OzonExpress.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Agences",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ville = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agences", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Articles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(250)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(150)", nullable: false),
-                    Prix = table.Column<float>(type: "real", nullable: false),
-                    Quantite = table.Column<int>(type: "int", nullable: false)
+                    Nom = table.Column<string>(type: "nvarchar(50)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(250)", nullable: true),
+                    Prix = table.Column<float>(type: "real", nullable: true),
+                    Quantite = table.Column<int>(type: "int", nullable: true),
+                    ImageName = table.Column<string>(type: "nvarchar(150)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,10 +47,10 @@ namespace OzonExpress.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titre = table.Column<string>(type: "nvarchar(250)", nullable: false),
-                    Article = table.Column<string>(type: "nvarchar(1000)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateAjout = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Titre = table.Column<string>(type: "nvarchar(250)", nullable: true),
+                    Article = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    ImageName = table.Column<string>(type: "nvarchar(150)", nullable: true),
+                    DateAjout = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,8 +75,8 @@ namespace OzonExpress.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Question = table.Column<string>(type: "nvarchar(500)", nullable: false),
-                    Reponse = table.Column<string>(type: "nvarchar(500)", nullable: false)
+                    Question = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    Reponse = table.Column<string>(type: "nvarchar(500)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,16 +96,47 @@ namespace OzonExpress.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Villes",
+                name: "Tarifs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NomVille = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    Cout = table.Column<float>(type: "real", nullable: true),
+                    AgenceDepId = table.Column<int>(type: "int", nullable: true),
+                    AgenceArrId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Villes", x => x.Id);
+                    table.PrimaryKey("PK_Tarifs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tarifs_Agences_AgenceArrId",
+                        column: x => x.AgenceArrId,
+                        principalTable: "Agences",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Tarifs_Agences_AgenceDepId",
+                        column: x => x.AgenceDepId,
+                        principalTable: "Agences",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Commentaires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Commentaires", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Commentaires_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -101,9 +145,9 @@ namespace OzonExpress.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -112,8 +156,7 @@ namespace OzonExpress.Migrations
                         name: "FK_Ventes_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -139,30 +182,6 @@ namespace OzonExpress.Migrations
                         principalTable: "Paniers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tarifs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    VilleDepId = table.Column<int>(type: "int", nullable: false),
-                    VilleArrId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tarifs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tarifs_Villes_VilleArrId",
-                        column: x => x.VilleArrId,
-                        principalTable: "Villes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Tarifs_Villes_VilleDepId",
-                        column: x => x.VilleDepId,
-                        principalTable: "Villes",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -201,14 +220,19 @@ namespace OzonExpress.Migrations
                 column: "VenteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tarifs_VilleArrId",
-                table: "Tarifs",
-                column: "VilleArrId");
+                name: "IX_Commentaires_ClientId",
+                table: "Commentaires",
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tarifs_VilleDepId",
+                name: "IX_Tarifs_AgenceArrId",
                 table: "Tarifs",
-                column: "VilleDepId");
+                column: "AgenceArrId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tarifs_AgenceDepId",
+                table: "Tarifs",
+                column: "AgenceDepId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ventes_ClientId",
@@ -229,6 +253,9 @@ namespace OzonExpress.Migrations
                 name: "Blogs");
 
             migrationBuilder.DropTable(
+                name: "Commentaires");
+
+            migrationBuilder.DropTable(
                 name: "FAQs");
 
             migrationBuilder.DropTable(
@@ -244,7 +271,7 @@ namespace OzonExpress.Migrations
                 name: "Ventes");
 
             migrationBuilder.DropTable(
-                name: "Villes");
+                name: "Agences");
 
             migrationBuilder.DropTable(
                 name: "Clients");

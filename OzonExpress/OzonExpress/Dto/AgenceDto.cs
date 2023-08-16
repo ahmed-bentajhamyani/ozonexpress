@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OzonExpress.Dto
 {
-    public class FAQDto
+    public class AgenceDto
     {
         public int? Id { get; set; }
-        public string? Question { get; set; }
-        public string? Reponse { get; set; }
+        public string? Ville { get; set; }
     }
 }

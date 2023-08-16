@@ -2,6 +2,6 @@
 {
     public class PanierDto
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }

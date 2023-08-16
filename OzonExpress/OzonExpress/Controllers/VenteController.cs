@@ -50,7 +50,7 @@ namespace OzonExpress.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateVente([FromQuery] int[] articleIds, [FromBody] VenteDto venteCreate)
+        public IActionResult CreateVente([FromQuery] int[] articleIds, [FromForm] VenteDto venteCreate)
         {
             if (venteCreate == null)
                 return BadRequest(ModelState);
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateVente(int venteId, [FromQuery] int[] articleIds, [FromBody] VenteDto updatedVente)
+        public IActionResult UpdateVente(int venteId, [FromQuery] int[] articleIds, [FromForm] VenteDto updatedVente)
         {
             if (updatedVente == null)
                 return BadRequest(ModelState);

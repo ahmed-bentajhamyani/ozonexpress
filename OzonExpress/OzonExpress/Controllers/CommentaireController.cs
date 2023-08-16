@@ -50,7 +50,7 @@ namespace OzonExpress.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateCommentaire([FromBody] CommentaireDto commentaireCreate)
+        public IActionResult CreateCommentaire([FromForm] CommentaireDto commentaireCreate)
         {
             if (commentaireCreate == null)
                 return BadRequest(ModelState);
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCommentaire(int commentaireId, [FromBody] CommentaireDto updatedCommentaire)
+        public IActionResult UpdateCommentaire(int commentaireId, [FromForm] CommentaireDto updatedCommentaire)
         {
             if (updatedCommentaire == null)
                 return BadRequest(ModelState);

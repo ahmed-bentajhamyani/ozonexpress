@@ -1,24 +1,38 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using OzonExpress.Data;
 using OzonExpress.Interfaces;
 using OzonExpress.Repositories;
 using OzonExpress.Repository;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                      });
+});
 
-builder.Services.AddCors(); // Make sure you call this previous to AddMvc
+// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<ICategorieRepository, CategorieRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IFAQRepository, FAQRepository>();
 builder.Services.AddScoped<IVenteRepository, VenteRepository>();
 builder.Services.AddScoped<IPanierRepository, PanierRepository>();
 builder.Services.AddScoped<ITarifRepository, TarifRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
-builder.Services.AddScoped<IVilleRepository, VilleRepository>();
+builder.Services.AddScoped<IAgenceRepository, AgenceRepository>();
 builder.Services.AddScoped<ICommentaireRepository, CommentaireRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,9 +55,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(
-    options => options.WithOrigins("http://localhost:3000").AllowAnyMethod()
-);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
