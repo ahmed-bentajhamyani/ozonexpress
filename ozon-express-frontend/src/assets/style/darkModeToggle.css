@@ -1,0 +1,73 @@
+label.darkmode-toggle {
+    width: 40px;
+    height: 20px;
+    position: relative;
+    display: block;
+    background: #ebebeb;
+    border-radius: 200px;
+    box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+}
+
+label.darkmode-toggle:after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background: linear-gradient(180deg, #ffcc89, #d8860b);
+    border-radius: 180px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+input#darkmode-toggle {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.dark input#darkmode-toggle+label {
+    background: #242424;
+}
+
+.dark input#darkmode-toggle+label:after {
+    left: 38px;
+    transform: translateX(-100%);
+    background: linear-gradient(180deg, #777, #3a3a3a);
+}
+
+label.darkmode-toggle,
+label.darkmode-toggle:after {
+    transition: 0.3s
+}
+
+label.darkmode-toggle:active:after {
+    width: 18px;
+}
+
+label.darkmode-toggle span {
+    position: absolute;
+    top: 4px;
+    z-index: 100;
+}
+
+label.darkmode-toggle span.sun {
+    left: 4px;
+    color: #fff;
+    transition: 0.3s;
+}
+
+label.darkmode-toggle span.moon {
+    left: 24px;
+    color: #7e7e7e;
+    transition: 0.3s;
+}
+
+.dark input#darkmode-toggle+label.darkmode-toggle span.sun {
+    color: #7e7e7e;
+}
+
+.dark input#darkmode-toggle+label.darkmode-toggle span.moon {
+    color: #fff;
+}
