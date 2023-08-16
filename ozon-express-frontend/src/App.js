@@ -1,34 +1,22 @@
-import './App.css';
-import Navbar from './components/partials/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import FAQs from './components/FAQs';
-import Tarifs from './components/Tarifs';
-import Agences from './components/Agences';
-import Market from './components/Market';
-import Blogs from './components/Blogs';
-import Testimonials from './components/Testimonials';
-import Footer from './components/partials/Footer';
-import Panier from './components/Panier';
-import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/home/Home';
+import Blog from './pages/blog/Blog';
+import Market from './pages/ozon_market/Market';
+import Admin from './pages/admin/Admin';
+import { useDarkMode } from 'context/DarkModeContext';
 
 function App() {
+
+  const { darkMode } = useDarkMode();
+
   return (
-    <div id='home' className="font-poppins">
-      <Navbar />
-
-      <section className="min-h-screen md:min-h-fit">
-        <Hero />
-      </section>
-
-      <Services />
-      <FAQs />
-      <Tarifs />
-      <Agences />
-      <Market />
-      <Blogs />
-      <Testimonials />
-      <Footer />
+    <div id='home' className={`font-poppins ${darkMode && 'dark bg-black'}`} data-simplebar>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/blogs/*" element={<Blog />} />
+        <Route path="/market/*" element={<Market />} />
+        <Route path="/admin/*" element={<Admin />} />
+      </Routes>
     </div>
   );
 }
