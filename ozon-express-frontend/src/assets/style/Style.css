@@ -1,0 +1,80 @@
+/* Custom scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Blog hero image */
+.all {
+    background-image: url(assets/images/blogs.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+}
+
+/* Dark Mode */
+.dark .all {
+    background-image: url(assets/images/blogs_dark.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+}
+
+/* Remove inheritance in quill Headings  */
+.ql-text h1 {
+    font-size: 2em;
+}
+
+.ql-text h2 {
+    font-size: 1.5em;
+}
+
+.ql-text h3 {
+    font-size: 1.17em;
+}
+
+.ql-text h4 {
+    font-size: 1em;
+}
+
+.ql-text h5 {
+    font-size: 0.83em;
+}
+
+.ql-text h6 {
+    font-size: 0.67em;
+}
+
+/* Dark mode toolbar text color */
+
+.dark .ql-toolbar .ql-stroke {
+    fill: none;
+    stroke: #fff;
+}
+
+.dark .ql-toolbar .ql-fill {
+    fill: #fff;
+    stroke: none;
+}
+
+.dark .ql-toolbar .ql-picker {
+    color: #fff;
+}
