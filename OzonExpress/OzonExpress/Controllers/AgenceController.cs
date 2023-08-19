@@ -21,7 +21,7 @@ namespace OzonExpress.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Agence>))]
-        public IActionResult Getagences()
+        public IActionResult GetAgences()
         {
             var agences = _mapper.Map<List<AgenceDto>>(_agenceRepository.GetAgences());
 
@@ -34,7 +34,7 @@ namespace OzonExpress.Controllers
         [HttpGet("{agenceId}")]
         [ProducesResponseType(200, Type = typeof(Agence))]
         [ProducesResponseType(400)]
-        public IActionResult Getagence(int agenceId)
+        public IActionResult GetAgence(int agenceId)
         {
             if (!_agenceRepository.AgenceExists(agenceId))
                 return NotFound();
@@ -73,7 +73,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult Updateagence(int agenceId, [FromForm] AgenceDto updatedagence)
+        public IActionResult UpdateAgence(int agenceId, [FromForm] AgenceDto updatedagence)
         {
             if (updatedagence == null)
                 return BadRequest(ModelState);
@@ -101,7 +101,7 @@ namespace OzonExpress.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult Deleteagence(int agenceId)
+        public IActionResult DeleteAgence(int agenceId)
         {
             if (!_agenceRepository.AgenceExists(agenceId))
             {
