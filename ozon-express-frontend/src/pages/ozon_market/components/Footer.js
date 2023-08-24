@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-scroll'
-import OzonLogo from 'assets/brand/ozonexpress.png'
+import OzonLogo from 'assets/brand/ozonexpress_logo.png'
 
 function Footer() {
 

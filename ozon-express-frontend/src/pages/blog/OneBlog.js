@@ -7,22 +7,24 @@ import BlogService from 'services/BlogService'
 import HttpClient from 'services/client/HttpClient'
 import ArticleService from 'services/ArticleService'
 import { formatBlogDate } from 'utils/formatBlogDate'
+import OneBlogSkeleton from './components/OneBlogSkeleton'
 
 function OneBlog() {
-    const blogService = new BlogService(HttpClient)
-    const articleService = new ArticleService(HttpClient)
+    const blogService = new BlogService(HttpClient);
+    const articleService = new ArticleService(HttpClient);
 
-    const { id } = useParams()
+    const { id } = useParams();
 
-    const [blog, setBlog] = useState()
-    const [articles, setArticles] = useState()
-    const [blogs, setBlogs] = useState()
+    const [isLoading, setIsLoading] = useState(true);
+    const [blog, setBlog] = useState();
+    const [articles, setArticles] = useState();
+    const [blogs, setBlogs] = useState();
 
     useEffect(() => {
-        fetchBlog()
-        fetchArticles()
-        fetchBlogs()
-    }, [])
+        fetchBlog();
+        fetchArticles();
+        fetchBlogs();
+    }, []);
 
     const fetchBlog = async () => {
         try {
@@ -51,9 +53,15 @@ function OneBlog() {
         }
     }
 
+    useEffect(() => {
+        if (blog && articles && blogs) setIsLoading(false);
+    }, [blog, articles, blogs]);
+
     return (
         <div className="container flex flex-col md:flex-row justify-center lg:items-center mx-auto pt-20 px-5 md:px-10 md:pb-10 xl:px-20">
-            {blog &&
+            {isLoading ?
+                <OneBlogSkeleton />
+                :
                 <div className="flex flex-col items-start mt-3">
                     <p className="font-extrabold text-4xl lg:text-5xl 2xl:text-6xl mt-1 dark:text-white">
                         {blog?.titre}
@@ -98,7 +106,7 @@ function OneBlog() {
                         </p>
 
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8'>
-                            {blogs.filter((blog) => blog.id != id).map((blog) => (
+                            {blogs?.filter((blog) => blog.id !== id).map((blog) => (
                                 <BlogCard blog={blog} />
                             ))}
                         </div>

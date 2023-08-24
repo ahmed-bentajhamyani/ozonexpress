@@ -5,24 +5,33 @@ import FAQService from 'services/FAQService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card';
 import Button from '../components/Button';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 function FAQs() {
-    const faqService = new FAQService(HttpClient)
+    const faqService = new FAQService(HttpClient);
 
     const [faqs, setFAQs] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
         const fetchFAQs = async () => {
             try {
                 const faqs = await faqService.getFAQs()
-                setFAQs(faqs)
+                if (faqs) {
+                    setFAQs(faqs);
+                }
             } catch (error) {
-                console.error(error)
+                setErrMsg(error);
             }
         }
 
-        fetchFAQs()
+        fetchFAQs();
     }, []);
+
+    useEffect(() => {
+        if(faqs[0]) setIsLoading(false);
+    }, [faqs]);
 
     const deleteFAQ = async (id) => {
         try {
@@ -36,18 +45,24 @@ function FAQs() {
     }
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <Link to={'create'}>
-                <Button button={{
-                    style: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-200',
-                    icon: <BsPlus />,
-                    text: 'Nouveau FAQ'
-                }} />
-            </Link>
-            <div className='grid grid-cols-1 w-full'>
-                <Card cardTitle={'FAQs'} items={faqs} deleteItem={deleteFAQ} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <Link to={'create'}>
+                        <Button button={{
+                            style: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-200',
+                            icon: <BsPlus />,
+                            text: 'Nouveau FAQ'
+                        }} />
+                    </Link>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'FAQs'} items={faqs} deleteItem={deleteFAQ} errMsg={errMsg} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

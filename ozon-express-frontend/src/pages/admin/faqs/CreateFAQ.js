@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import FAQService from 'services/FAQService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
     question: '',
@@ -12,7 +13,16 @@ const initialFieldValues = {
 function CreateFAQ() {
     const navigate = useNavigate();
 
-    const [values, setValues] = useState(initialFieldValues)
+    const [isLoading, setIsLoading] = useState(true);
+    const [values, setValues] = useState(initialFieldValues);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const HandleInputChange = (event) => {
         const { name, value } = event.target
@@ -24,17 +34,17 @@ function CreateFAQ() {
 
     const createFAQ = async () => {
         let formData = new FormData();
-        formData.append('question', values.question)
-        formData.append('reponse', values.reponse)
+        formData.append('question', values.question);
+        formData.append('reponse', values.reponse);
 
-        const faqService = new FAQService(HttpClient)
+        const faqService = new FAQService(HttpClient);
         try {
-            const res = await faqService.createFAQ(formData)
+            const res = await faqService.createFAQ(formData);
             if (res.ok) {
-                return navigate('/admin/faqs')
+                return navigate('/admin/faqs');
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -44,12 +54,17 @@ function CreateFAQ() {
     ]
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <div className='grid grid-cols-1 w-full'>
-
-                <Card cardTitle={'Ajouter un FAQ'} labels={labels} createItem={createFAQ} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'Ajouter un FAQ'} labels={labels} createItem={createFAQ} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

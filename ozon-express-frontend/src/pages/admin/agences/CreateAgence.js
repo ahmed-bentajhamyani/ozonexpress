@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AgenceService from 'services/AgenceService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
   ville: '',
@@ -11,10 +12,19 @@ const initialFieldValues = {
 function CreateAgence() {
   const navigate = useNavigate();
 
-  const [values, setValues] = useState(initialFieldValues)
+  const [isLoading, setIsLoading] = useState(true);
+  const [values, setValues] = useState(initialFieldValues);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const HandleInputChange = (event) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setValues({
       ...values,
       [name]: value
@@ -23,16 +33,16 @@ function CreateAgence() {
 
   const createAgence = async () => {
     let formData = new FormData();
-    formData.append('ville', values.ville)
+    formData.append('ville', values.ville);
 
-    const agenceService = new AgenceService(HttpClient)
+    const agenceService = new AgenceService(HttpClient);
     try {
-      const res = await agenceService.createAgence(formData)
+      const res = await agenceService.createAgence(formData);
       if (res.ok) {
-        return navigate('/admin/agences')
+        return navigate('/admin/agences');
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -41,11 +51,17 @@ function CreateAgence() {
   ]
 
   return (
-    <div className='flex flex-col items-end pt-3 px-5'>
-      <div className='grid grid-cols-1 w-full'>
-        <Card cardTitle={'Ajouter un Agence'} labels={labels} createItem={createAgence} />
-      </div>
-    </div>
+    <>
+      {isLoading ?
+        <PreloaderSpinner />
+        :
+        <div className='flex flex-col items-end pt-3 px-5'>
+          <div className='grid grid-cols-1 w-full'>
+            <Card cardTitle={'Ajouter un Agence'} labels={labels} createItem={createAgence} />
+          </div>
+        </div>
+      }
+    </>
   )
 }
 

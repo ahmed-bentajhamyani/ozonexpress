@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OzonExpress.Dto;
+using OzonExpress.Dtos;
 using OzonExpress.Models;
 using System.Diagnostics.Metrics;
 
@@ -38,6 +39,9 @@ namespace OzonExpress.Helper
 
             CreateMap<Commentaire, CommentaireDto>();
             CreateMap<CommentaireDto, Commentaire>();
+
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
         }
     }
 }

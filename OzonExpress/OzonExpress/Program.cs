@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using OzonExpress.Data;
+using OzonExpress.Helper;
 using OzonExpress.Interfaces;
 using OzonExpress.Repositories;
 using OzonExpress.Repository;
@@ -16,7 +17,8 @@ builder.Services.AddCors(options =>
                       {
                           policy.WithOrigins("http://localhost:3000")
                                             .AllowAnyHeader()
-                                            .AllowAnyMethod();
+                                            .AllowAnyMethod()
+                                            .AllowCredentials();
                       });
 });
 
@@ -34,6 +36,8 @@ builder.Services.AddScoped<ITarifRepository, TarifRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IAgenceRepository, AgenceRepository>();
 builder.Services.AddScoped<ICommentaireRepository, CommentaireRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JwtService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

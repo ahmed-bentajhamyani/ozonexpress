@@ -93,7 +93,7 @@ function Sidebar({ sidebarOpen, toggleSidebarOpen }) {
         if (isMobile) toggleSidebarOpen(false);
 
         // Open sidebar when click a menu
-        // if (isBrowser && !sidebarOpen) toggleSidebarOpen(true);
+        if (isBrowser && !sidebarOpen) toggleSidebarOpen(true);
     }
 
     const year = new Date().getFullYear();
@@ -102,7 +102,7 @@ function Sidebar({ sidebarOpen, toggleSidebarOpen }) {
         <>
             <aside id='sidebar' className={`flex flex-col lg:sticky top-0 z-40 h-screen overflow-hidden bg-white shadow-sm duration-300 dark:bg-black ${sidebarOpen ? 'fixed top-0 left-0 w-[240px]' : 'sticky w-[70px]'}`}>
                 <div className='flex flex-col h-screen'>
-                    <a href="/market" className='flex bg-white sticky h-16 w-full top-0 py-3 px-2 z-30 shadow-sm duration-500 dark:bg-black'>
+                    <a href="/market" className='flex bg-white sticky h-16 w-full top-0 py-3 px-2 z-40 shadow-sm duration-500 dark:bg-black'>
                         <img src={Box} alt='OzonExpress logo' className={`h-10 ${sidebarOpen && 'hidden'}`} />
                         <img src={OzonExpress} alt='OzonExpress logo' className={`h-12 ${!sidebarOpen && 'scale-0'}`} />
                     </a>
@@ -134,7 +134,7 @@ function Sidebar({ sidebarOpen, toggleSidebarOpen }) {
                                         {menu.submenu && menu.submenuOpen && sidebarOpen && (
                                             <ul className='ml-5'>
                                                 {menu.submenuItems.map((submenuItem, index) => (
-                                                    <li className={`flex items-center text-xs hover:text-ozon-red w-full p-2 cursor-pointer select-none duration-300 dark:text-white dark:hover:text-ozon-yellow ${sidebarOpen ? 'gap-x-2' : 'max-w-min'}`} onClick={() => goTo(menu.url)} key={index}>
+                                                    <li className={`flex items-center text-xs hover:text-ozon-red w-full p-2 cursor-pointer select-none duration-300 dark:text-white dark:hover:text-ozon-yellow ${sidebarOpen ? 'gap-x-2' : 'max-w-min'}`} onClick={() => goTo(submenuItem.url)} key={index}>
                                                         <span className={`${sidebarOpen && 'float-left'}`}>
                                                             <TiChevronRightOutline />
                                                         </span>

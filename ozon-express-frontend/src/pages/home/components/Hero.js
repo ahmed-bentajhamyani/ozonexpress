@@ -14,7 +14,7 @@ function Hero() {
             text: 'Votre colis?'
         },
         {
-            style: 'flex justify-center items-center w-72 lg:w-64 xl:w-72 xl:px-12 py-3 space-x-1 text-ozon-red border border-ozon-red cursor-pointer rounded whitespace-nowrap hover:text-white hover:bg-ozon-red-tone active:ring-4 active:outline-none active:ring-ozon-red-tint dark:text-ozon-yellow dark:border-ozon-yellow dark:hover:text-black dark:hover:bg-ozon-yellow dark:ring-ozon-yellow/50',
+            style: 'flex justify-center items-center w-72 lg:w-64 xl:w-72 xl:px-12 py-3 space-x-1 text-ozon-red border border-ozon-red cursor-pointer rounded whitespace-nowrap hover:text-white hover:bg-ozon-red-tone active:ring-4 active:outline-none active:ring-ozon-red-tint',
             icon: <BiSolidUser />,
             iconStyle: 'text-xl',
             text: 'Espace client?'
@@ -33,7 +33,7 @@ function Hero() {
 
                 <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 font-semibold mt-4 md:mt-6">
                     {Buttons.map((button, index) => (
-                        <Button button={button} key={index}/>
+                        <Button button={button} key={index} />
                     ))}
                 </div>
             </div>

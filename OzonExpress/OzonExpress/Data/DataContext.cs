@@ -19,6 +19,7 @@ namespace OzonExpress.Data
         public DbSet<Agence> Agences { get; set; }
         public DbSet<Tarif> Tarifs { get; set; }
         public DbSet<Commentaire> Commentaires { get; set; }
+        public DbSet<User> Users { set; get; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,6 +62,11 @@ namespace OzonExpress.Data
                 .WithMany()
                 .HasForeignKey(t => t.AgenceArrId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<User>(entity => { 
+                entity.HasIndex(e => e.Email).IsUnique(); 
+            });
         }
     }
 }

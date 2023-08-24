@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AgenceService from 'services/AgenceService';
 import TarifService from 'services/TarifService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
   agenceDepId: '',
@@ -14,17 +15,21 @@ const initialFieldValues = {
 function CreateTarif() {
   const navigate = useNavigate();
 
-  const [agences, setAgences] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [agences, setAgences] = useState([]);
 
   useEffect(() => {
     const fetchAgences = async () => {
-      const agenceService = new AgenceService(HttpClient)
+      const agenceService = new AgenceService(HttpClient);
 
       try {
-        const agences = await agenceService.getAgences()
-        setAgences(agences)
+        const agences = await agenceService.getAgences();
+        if (agences) {
+          setAgences(agences);
+          setIsLoading(false);
+        }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
 
@@ -65,11 +70,17 @@ function CreateTarif() {
   ]
 
   return (
-    <div className='flex flex-col items-end pt-3 px-5'>
-      <div className='grid grid-cols-1 w-full'>
-        <Card cardTitle={'Ajouter un Tarif'} labels={labels} items={agences} createItem={createTarif} />
-      </div>
-    </div>
+    <>
+      {isLoading ?
+        <PreloaderSpinner />
+        :
+        <div className='flex flex-col items-end pt-3 px-5'>
+          <div className='grid grid-cols-1 w-full'>
+            <Card cardTitle={'Ajouter un Tarif'} labels={labels} items={agences} createItem={createTarif} />
+          </div>
+        </div>
+      }
+    </>
   )
 }
 

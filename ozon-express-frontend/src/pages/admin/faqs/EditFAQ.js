@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import FAQService from 'services/FAQService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
     question: '',
@@ -11,11 +12,12 @@ const initialFieldValues = {
 
 function EditFAQ() {
     const navigate = useNavigate();
-    const { id } = useParams()
+    const { id } = useParams();
 
-    const faqService = new FAQService(HttpClient)
+    const faqService = new FAQService(HttpClient);
 
-    const [values, setValues] = useState(initialFieldValues)
+    const [isLoading, setIsLoading] = useState(true);
+    const [values, setValues] = useState(initialFieldValues);
 
     useEffect(() => {
         const fetchFAQ = async () => {
@@ -30,12 +32,16 @@ function EditFAQ() {
         fetchFAQ()
     }, []);
 
+    useEffect(() => {
+        if (values !== initialFieldValues) setIsLoading(false);
+    }, [values]);
+
     const HandleInputChange = (event) => {
-        const { name, value } = event.target
-        setValues({
-            ...values,
-            [name]: value
-        });
+        const { name, value } = event.target.
+            setValues({
+                ...values,
+                [name]: value
+            });
     }
 
     const editFAQ = async () => {
@@ -60,11 +66,17 @@ function EditFAQ() {
     ]
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <div className='grid grid-cols-1 w-full'>
-                <Card cardTitle={'Modifier un FAQ'} labels={labels} item={values} editItem={editFAQ} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'Modifier un FAQ'} labels={labels} item={values} editItem={editFAQ} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

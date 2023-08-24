@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Card from '../components/Card'
 import BlogService from 'services/BlogService'
 import HttpClient from 'services/client/HttpClient'
+import PreloaderSpinner from 'components/PreloaderSpinner'
 
 const initialFieldValues = {
     titre: '',
@@ -13,29 +14,35 @@ const initialFieldValues = {
 
 function EditBlog() {
     const navigate = useNavigate();
-    const { id } = useParams()
+    const { id } = useParams();
 
-    const blogService = new BlogService(HttpClient)
+    const blogService = new BlogService(HttpClient);
 
-    const [values, setValues] = useState(initialFieldValues)
-    const [article, setArticle] = useState('')
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [values, setValues] = useState(initialFieldValues);
+    const [article, setArticle] = useState('');
 
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const blog = await blogService.getBlog(id)
-                setValues(blog)
-                setArticle(blog.article)
+                const blog = await blogService.getBlog(id);
+                setValues(blog);
+                setArticle(blog.article);
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
         }
 
         fetchBlog()
     }, []);
 
+    useEffect(() => {
+        if (values !== initialFieldValues) setIsLoading(false);
+    }, [values]);
+
     const HandleInputChange = (event) => {
-        const { name, value } = event.target
+        const { name, value } = event.target;
         setValues({
             ...values,
             [name]: value
@@ -51,7 +58,7 @@ function EditBlog() {
                     ...values,
                     imageFile,
                     imageSrc: x.target.result
-                })
+                });
             }
             reader.readAsDataURL(imageFile);
         }
@@ -60,7 +67,7 @@ function EditBlog() {
                 ...values,
                 imageFile: null,
                 imageSrc: ''
-            })
+            });
         }
     }
 
@@ -69,23 +76,23 @@ function EditBlog() {
             ...values,
             imageFile: null,
             imageSrc: ''
-        })
+        });
     }
 
     const editBlog = async () => {
         let formData = new FormData();
-        formData.append('titre', values.titre)
-        formData.append('article', article)
-        formData.append('imageName', values.imageName)
-        formData.append('imageFile', values.imageFile)
+        formData.append('titre', values.titre);
+        formData.append('article', article);
+        formData.append('imageName', values.imageName);
+        formData.append('imageFile', values.imageFile);
 
         try {
-            const res = await blogService.updateBlog(id, formData)
+            const res = await blogService.updateBlog(id, formData);
             if (res.ok) {
-                return navigate('/admin/blogs')
+                return navigate('/admin/blogs');
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -96,11 +103,17 @@ function EditBlog() {
     ]
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <div className='grid grid-cols-1 w-full'>
-                <Card cardTitle={'Modifier un Blog'} labels={labels} item={values} imageSrc={values.imageSrc} deleteImage={deleteImage} editItem={editBlog} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'Modifier un Blog'} labels={labels} item={values} imageSrc={values.imageSrc} deleteImage={deleteImage} editItem={editBlog} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

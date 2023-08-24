@@ -7,8 +7,8 @@ function Table({ items, getItem, editItem, deleteItem }) {
 
     return (
         <div className='overflow-x-auto my-3'>
-            <table className='text-sm text-left w-full text-gray-500 dark:text-gray-400'>
-                <thead className='text-xs text-gray-700 capitalize dark:text-gray-400'>
+            <table className='text-sm text-left w-full dark:text-white'>
+                <thead className='text-xs capitalize'>
                     <tr>
                         {Object.keys(items[0]).filter((key) => !filters.includes(key)).map((key, index) => (
                             <th scope='col' className='px-2 md:px-3 py-3 md:py-4' key={index}>

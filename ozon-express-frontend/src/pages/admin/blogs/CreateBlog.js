@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import BlogService from 'services/BlogService';
 import HttpClient from 'services/client/HttpClient';
 import { useNavigate } from 'react-router-dom';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
     titre: '',
@@ -13,11 +14,21 @@ const initialFieldValues = {
 
 function CreateBlog() {
     const navigate = useNavigate();
+
+    const [isLoading, setIsLoading] = useState(true);
     const [values, setValues] = useState(initialFieldValues)
     const [article, setArticle] = useState('')
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     const HandleInputChange = (event) => {
-        const { name, value } = event.target
+        const { name, value } = event.target;
         setValues({
             ...values,
             [name]: value
@@ -51,24 +62,24 @@ function CreateBlog() {
             ...values,
             imageFile: null,
             imageSrc: ''
-        })
+        });
     }
 
     const createBlog = async () => {
         let formData = new FormData();
-        formData.append('titre', values.titre)
-        formData.append('article', article)
-        formData.append('imageName', values.imageName)
-        formData.append('imageFile', values.imageFile)
+        formData.append('titre', values.titre);
+        formData.append('article', article);
+        formData.append('imageName', values.imageName);
+        formData.append('imageFile', values.imageFile);
 
-        const blogService = new BlogService(HttpClient)
+        const blogService = new BlogService(HttpClient);
         try {
-            const res = await blogService.createBlog(formData)
+            const res = await blogService.createBlog(formData);
             if (res.ok) {
-                return navigate('/admin/blogs')
+                return navigate('/admin/blogs');
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -79,11 +90,17 @@ function CreateBlog() {
     ]
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <div className='grid grid-cols-1 w-full'>
-                <Card cardTitle={'Ajouter un blog'} labels={labels} imageSrc={values.imageSrc} deleteImage={deleteImage} createItem={createBlog} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'Ajouter un blog'} labels={labels} imageSrc={values.imageSrc} deleteImage={deleteImage} createItem={createBlog} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

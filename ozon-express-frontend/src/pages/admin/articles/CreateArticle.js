@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import { useNavigate } from 'react-router-dom';
 import ArticleService from 'services/ArticleService';
 import HttpClient from 'services/client/HttpClient';
 import CategorieService from 'services/CategorieService';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
   nom: '',
@@ -19,7 +20,8 @@ const initialFieldValues = {
 function CreateArticle() {
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState()
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -27,7 +29,10 @@ function CreateArticle() {
 
       try {
         const categories = await categorieService.getCategories()
-        setCategories(categories)
+        if (categories) {
+          setCategories(categories);
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error(error)
       }
@@ -106,12 +111,17 @@ function CreateArticle() {
   ]
 
   return (
-    <div className='flex flex-col items-end pt-3 px-5'>
-      <div className='grid grid-cols-1 w-full'>
-
-        <Card cardTitle={'Ajouter un article'} labels={labels} items={categories} imageSrc={values.imageSrc} deleteImage={deleteImage} createItem={createArticle} />
-      </div>
-    </div>
+    <>
+      {isLoading ?
+        <PreloaderSpinner />
+        :
+        <div className='flex flex-col items-end pt-3 px-5'>
+          <div className='grid grid-cols-1 w-full'>
+            <Card cardTitle={'Ajouter un article'} labels={labels} items={categories} imageSrc={values.imageSrc} deleteImage={deleteImage} createItem={createArticle} />
+          </div>
+        </div>
+      }
+    </>
   )
 }
 

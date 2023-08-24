@@ -4,6 +4,7 @@ import Card from '../components/Card'
 import ArticleService from 'services/ArticleService';
 import HttpClient from 'services/client/HttpClient';
 import CategorieService from 'services/CategorieService';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
     nom: '',
@@ -20,39 +21,45 @@ function EditArticle() {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const [categories, setCategories] = useState()
+    const [categories, setCategories] = useState();
 
-    const articleService = new ArticleService(HttpClient)
+    const articleService = new ArticleService(HttpClient);
 
-    const [values, setValues] = useState(initialFieldValues)
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [values, setValues] = useState(initialFieldValues);
 
     useEffect(() => {
         fetchCategories()
         fetchArticle()
     }, []);
 
+    useEffect(() => {
+        if (values !== initialFieldValues) setIsLoading(false);
+    }, [values]);
+
     const fetchCategories = async () => {
-        const categorieService = new CategorieService(HttpClient)
+        const categorieService = new CategorieService(HttpClient);
 
         try {
-            const categories = await categorieService.getCategories()
-            setCategories(categories)
+            const categories = await categorieService.getCategories();
+            setCategories(categories);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
     const fetchArticle = async () => {
         try {
-            const article = await articleService.getArticle(id)
-            setValues(article)
+            const article = await articleService.getArticle(id);
+            setValues(article);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
     const HandleInputChange = (event) => {
-        const { name, value } = event.target
+        const { name, value } = event.target;
         setValues({
             ...values,
             [name]: value
@@ -68,7 +75,7 @@ function EditArticle() {
                     ...values,
                     imageFile,
                     imageSrc: x.target.result
-                })
+                });
             }
             reader.readAsDataURL(imageFile);
         }
@@ -77,7 +84,7 @@ function EditArticle() {
                 ...values,
                 imageFile: null,
                 imageSrc: ''
-            })
+            });
         }
     }
 
@@ -86,26 +93,26 @@ function EditArticle() {
             ...values,
             imageFile: null,
             imageSrc: ''
-        })
+        });
     }
 
     const editArticle = async () => {
         let formData = new FormData();
-        formData.append('nom', values.nom)
-        formData.append('description', values.description)
-        formData.append('imageName', values.imageName)
-        formData.append('imageFile', values.imageFile)
-        formData.append('prix', values.prix)
-        formData.append('quantite', values.quantite)
-        formData.append('categorieId', values.categorieId)
+        formData.append('nom', values.nom);
+        formData.append('description', values.description);
+        formData.append('imageName', values.imageName);
+        formData.append('imageFile', values.imageFile);
+        formData.append('prix', values.prix);
+        formData.append('quantite', values.quantite);
+        formData.append('categorieId', values.categorieId);
 
         try {
-            const res = await articleService.updateArticle(id, formData)
+            const res = await articleService.updateArticle(id, formData);
             if (res.ok) {
-                return navigate('/admin/articles')
+                return navigate('/admin/articles');
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -116,14 +123,20 @@ function EditArticle() {
         { type: "number", name: "prix", value: values.prix, onChange: HandleInputChange },
         { type: "number", name: "quantite", value: values.quantite, onChange: HandleInputChange },
         { type: "select", title: "categorie", defaultOption: 'Choisir un categorie', name: "categorieId", option: 'nom', onChange: HandleInputChange },
-      ]
+    ]
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <div className='grid grid-cols-1 w-full'>
-                <Card cardTitle={'Modifier un article'} labels={labels} items={categories} item={values} imageSrc={values.imageSrc} deleteImage={deleteImage} editItem={editArticle} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'Modifier un article'} labels={labels} items={categories} item={values} imageSrc={values.imageSrc} deleteImage={deleteImage} editItem={editArticle} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

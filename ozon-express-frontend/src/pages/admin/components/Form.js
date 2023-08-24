@@ -88,7 +88,7 @@ function renderInput(label, imageSrc, items, deleteImage, item) {
     }
     else {
         return (
-            <input className="appearance-none block w-full border rounded py-2 px-4 mb-3 focus:outline-none focus:border-ozon-red dark:bg-black dark:text-white dark:focus:border-ozon-yellow" id={label?.name} type={label?.type} placeholder={label?.placeholder} value={item?.[label?.name]} name={label?.[label?.name]} onChange={label?.onChange} />
+            <input className="appearance-none block w-full border rounded py-2 px-4 mb-3 focus:outline-none focus:border-ozon-red dark:bg-black dark:text-white dark:focus:border-ozon-yellow" id={label?.name} type={label?.type} placeholder={label?.placeholder} value={item?.[label?.name]} name={label?.name} onChange={label?.onChange} />
         )
     }
 }

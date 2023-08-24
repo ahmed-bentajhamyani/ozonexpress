@@ -3,7 +3,7 @@ import { formatBlogDate } from 'utils/formatBlogDate'
 
 function BlogCard({ blog }) {
     return (
-        <div className="flex flex-col justify-start items-start w-full py-3" key={blog?.id}>
+        <div className="flex flex-col justify-start items-start w-full py-3">
             <a className='w-full' href={`/blogs/${blog?.id}`}>
                 <img src={blog.imageSrc} alt='' className='w-full h-48 object-cover rounded-3xl mt-3' />
             </a>

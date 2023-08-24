@@ -6,7 +6,7 @@ import Button from 'components/Button'
 import AgenceService from 'services/AgenceService'
 import HttpClient from 'services/client/HttpClient'
 
-function Agences() {
+function Agences({ setAgencesLoaded, isLoaded }) {
 
     const agenceService = new AgenceService(HttpClient)
 
@@ -24,6 +24,10 @@ function Agences() {
 
         fetchAgences()
     }, []);
+
+    useEffect(() => {
+        if (agences[0]) setAgencesLoaded(true);
+    }, [agences]);
 
     const Buttons = [
         {
@@ -43,6 +47,8 @@ function Agences() {
     ]
 
     return (
+        <>
+      {isLoaded &&
         <section id='agences' className="relative bg-ozon-red w-full h-fit lg:h-[672px] mt-20">
             <div className='lg:container flex flex-col lg:flex-row justify-between lg:justify-start items-center mx-auto pt-10 lg:py-10 lg:px-10 xl:px-20'>
 
@@ -107,6 +113,8 @@ function Agences() {
                 </div>
             </div>
         </section>
+      }
+    </>
     )
 }
 

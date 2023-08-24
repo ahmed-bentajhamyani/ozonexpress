@@ -23,16 +23,32 @@
 }
 
 /* Blog hero image */
-.all {
+.blog-bachground-image {
     background-image: url(assets/images/blogs.jpg);
     background-repeat: no-repeat;
     background-position: top;
     background-size: contain;
 }
 
-/* Dark Mode */
-.dark .all {
+/* Blog hero image Dark Mode */
+.dark .blog-bachground-image {
     background-image: url(assets/images/blogs_dark.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+}
+
+/* Market hero image */
+.market-bachground-image {
+    background-image: url(assets/images/market.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+}
+
+/* Market hero image Dark Mode */
+.dark .market-bachground-image {
+    background-image: url(assets/images/market_dark.jpg);
     background-repeat: no-repeat;
     background-position: top;
     background-size: contain;

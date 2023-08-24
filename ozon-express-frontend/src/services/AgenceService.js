@@ -1,5 +1,5 @@
 class AgenceService {
-    URL = 'https://localhost:7094/api/Agence'
+    URL = 'Agence/'
 
     constructor(httpClient) {
         this.httpClient = httpClient
@@ -8,20 +8,36 @@ class AgenceService {
     async getAgences() {
         try {
             const response = await this.httpClient.get(this.URL)
-            return response.json()
+            if (response.ok) {
+                return response.json();
+            } else if (response?.status === 401) {
+                throw new Error('Unauthorized');
+            } else {
+                throw new Error('Fetch failed. Please try again later.');
+            }
         } catch (error) {
-            console.error(error)
-            throw error
+            if (error?.message === 'Failed to fetch')
+                throw new Error('No Server Response');
+
+            throw error;
         }
     }
 
     async getAgence(id) {
         try {
-            const response = await this.httpClient.get(this.URL + '/' + id)
-            return response.json()
+            const response = await this.httpClient.get(this.URL + id)
+            if (response.ok) {
+                return response.json();
+            } else if (response?.status === 401) {
+                throw new Error('Unauthorized');
+            } else {
+                throw new Error('Fetch failed. Please try again later.');
+            }
         } catch (error) {
-            console.error(error)
-            throw error
+            if (error?.message === 'Failed to fetch')
+                throw new Error('No Server Response');
+
+            throw error;
         }
     }
 
@@ -37,7 +53,7 @@ class AgenceService {
 
     async updateAgence(id, agence) {
         try {
-            const response = await this.httpClient.put(this.URL + '/' + id, agence)
+            const response = await this.httpClient.put(this.URL + id, agence)
             return response
         } catch (error) {
             console.error(error)
@@ -47,7 +63,7 @@ class AgenceService {
 
     async deleteAgence(id) {
         try {
-            const response = await this.httpClient.delete(this.URL + '/' + id)
+            const response = await this.httpClient.delete(this.URL + id)
             return response
         } catch (error) {
             console.error(error)

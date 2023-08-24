@@ -7,9 +7,9 @@ namespace OzonExpress.Interfaces
         bool AgenceExists(int id);
         ICollection<Agence> GetAgences();
         Agence GetAgence(int id);
-        bool CreateAgence(Agence Agence);
-        bool UpdateAgence(Agence Agence);
-        bool DeleteAgence(Agence Agence);
+        bool CreateAgence(Agence agence);
+        bool UpdateAgence(Agence agence);
+        bool DeleteAgence(Agence agence);
         bool Save();
     }
 }

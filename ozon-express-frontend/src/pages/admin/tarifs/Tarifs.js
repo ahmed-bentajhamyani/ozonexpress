@@ -6,46 +6,55 @@ import Button from '../components/Button';
 import { BsPlus } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 function Tarifs() {
   const tarifService = new TarifService(HttpClient)
 
   const [tarifs, setTarifs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
     const fetchTarifs = async () => {
       try {
         const tarifs = await tarifService.getTarifs();
-        let newTarifs = []
+        if (tarifs) {
+          let newTarifs = []
 
-        await Promise.all(tarifs.map(async (tarif) => {
-          const agenceDep = await getAgenceById(tarif.agenceDepId);
-          const agenceArr = await getAgenceById(tarif.agenceArrId);
+          await Promise.all(tarifs.map(async (tarif) => {
+            const agenceDep = await getAgenceById(tarif.agenceDepId);
+            const agenceArr = await getAgenceById(tarif.agenceArrId);
 
-          newTarifs.push({
-            id: tarif.id,
-            "agence de départ": agenceDep,
-            "agence d'arrivée": agenceArr,
-            cout: tarif.cout
-          });
-        }));
-        
-        setTarifs(newTarifs)
+            newTarifs.push({
+              id: tarif.id,
+              "agence de départ": agenceDep,
+              "agence d'arrivée": agenceArr,
+              cout: tarif.cout
+            });
+          }));
+
+          setTarifs(newTarifs);
+        }
       } catch (error) {
-        console.error(error)
+        setErrMsg(error)
       }
     }
 
     fetchTarifs()
   }, []);
 
+  useEffect(() => {
+    if (tarifs[0]) setIsLoading(false);
+  }, [tarifs]);
+
   async function getAgenceById(id) {
     const agenceService = new AgenceService(HttpClient)
     try {
-      const res = await agenceService.getAgence(id)
-      return res.ville
+      const res = await agenceService.getAgence(id);
+      if (res) return res.ville;
     } catch (error) {
-      console.error(error)
+      setErrMsg(new Error("Cannot fetch agences. Please try again later"));
     }
   }
 
@@ -61,18 +70,24 @@ function Tarifs() {
   }
 
   return (
-    <div className='flex flex-col items-end pt-3 px-5'>
-      <Link to={'create'}>
-        <Button button={{
-          style: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-200',
-          icon: <BsPlus />,
-          text: 'Nouveau Tarif'
-        }} />
-      </Link>
-      <div className='grid grid-cols-1 w-full'>
-        <Card cardTitle={'Tarifs'} items={tarifs} deleteItem={deleteTarif} />
-      </div>
-    </div>
+    <>
+      {isLoading ?
+        <PreloaderSpinner />
+        :
+        <div className='flex flex-col items-end pt-3 px-5'>
+          <Link to={'create'}>
+            <Button button={{
+              style: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-200',
+              icon: <BsPlus />,
+              text: 'Nouveau Tarif'
+            }} />
+          </Link>
+          <div className='grid grid-cols-1 w-full'>
+            <Card cardTitle={'Tarifs'} items={tarifs} deleteItem={deleteTarif} errMsg={errMsg} />
+          </div>
+        </div>
+      }
+    </>
   )
 }
 

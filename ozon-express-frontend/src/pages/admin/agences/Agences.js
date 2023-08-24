@@ -1,28 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import AgenceService from 'services/AgenceService';
 import HttpClient from 'services/client/HttpClient';
 import Button from '../components/Button';
 import { BsPlus } from 'react-icons/bs';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 function Agences() {
   const agenceService = new AgenceService(HttpClient)
 
   const [agences, setAgences] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
     const fetchAgences = async () => {
       try {
-        const agences = await agenceService.getAgences()
-        setAgences(agences)
+        const agences = await agenceService.getAgences();
+        if (agences) setAgences(agences);
       } catch (error) {
-        console.error(error)
+        setErrMsg(error)
       }
     }
 
     fetchAgences()
   }, []);
+
+  useEffect(() => {
+    if (agences[0]) setIsLoading(false);
+  }, [agences]);
 
   const deleteAgence = async (id) => {
     try {
@@ -31,23 +38,29 @@ function Agences() {
         setAgences(agences => agences.filter(agence => agence.id !== id));
       }
     } catch (error) {
-      console.error(error)
+      setErrMsg(error)
     }
   }
 
   return (
-    <div className='flex flex-col items-end pt-3 px-5'>
-      <Link to={'create'}>
-        <Button button={{
-          style: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-200',
-          icon: <BsPlus />,
-          text: 'Nouveau Agence'
-        }} />
-      </Link>
-      <div className='grid grid-cols-1 w-full'>
-        <Card cardTitle={'Agences'} items={agences} deleteItem={deleteAgence} />
-      </div>
-    </div>
+    <>
+      {isLoading ?
+        <PreloaderSpinner />
+        :
+        <div className='flex flex-col items-end pt-3 px-5'>
+          <Link to={'create'}>
+            <Button button={{
+              style: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-200',
+              icon: <BsPlus />,
+              text: 'Nouveau Agence'
+            }} />
+          </Link>
+          <div className='grid grid-cols-1 w-full'>
+            <Card cardTitle={'Agences'} items={agences} deleteItem={deleteAgence} errMsg={errMsg} />
+          </div>
+        </div>
+      }
+    </>
   )
 }
 

@@ -1,5 +1,5 @@
 class ArticleService {
-    URL = 'https://localhost:7094/api/Article'
+    URL = 'Article/'
 
     constructor(httpClient) {
         this.httpClient = httpClient
@@ -8,20 +8,30 @@ class ArticleService {
     async getArticles() {
         try {
             const response = await this.httpClient.get(this.URL)
-            return response.json()
+            if (response.ok) {
+                return response.json();
+            } else if (response?.status === 401) {
+                throw new Error('Unauthorized');
+            } else {
+                throw new Error('Fetch failed. Please try again later.');
+            }
         } catch (error) {
-            console.error(error)
-            throw error
+            throw error;
         }
     }
 
     async getArticle(id) {
         try {
-            const response = await this.httpClient.get(this.URL + '/' + id)
-            return response.json()
+            const response = await this.httpClient.get(this.URL + id)
+            if (response.ok) {
+                return response.json();
+            } else if (response?.status === 401) {
+                throw new Error('Unauthorized');
+            } else {
+                throw new Error('Fetch failed. Please try again later.');
+            }
         } catch (error) {
-            console.error(error)
-            throw error
+            throw error;
         }
     }
 
@@ -37,7 +47,7 @@ class ArticleService {
 
     async updateArticle(id, article) {
         try {
-            const response = await this.httpClient.put(this.URL + '/' + id, article)
+            const response = await this.httpClient.put(this.URL + id, article)
             return response
         } catch (error) {
             console.error(error)
@@ -47,7 +57,7 @@ class ArticleService {
 
     async deleteArticle(id) {
         try {
-            const response = await this.httpClient.delete(this.URL + '/' + id)
+            const response = await this.httpClient.delete(this.URL + id)
             return response
         } catch (error) {
             console.error(error)

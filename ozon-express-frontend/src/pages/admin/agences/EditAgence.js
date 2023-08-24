@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AgenceService from 'services/AgenceService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card';
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
   ville: '',
@@ -10,27 +11,32 @@ const initialFieldValues = {
 
 function EditAgence() {
   const navigate = useNavigate();
-  const { id } = useParams()
+  const { id } = useParams();
 
-  const agenceService = new AgenceService(HttpClient)
+  const agenceService = new AgenceService(HttpClient);
 
-  const [values, setValues] = useState(initialFieldValues)
+  const [isLoading, setIsLoading] = useState(true);
+  const [values, setValues] = useState(initialFieldValues);
 
   useEffect(() => {
     const fetchAgence = async () => {
       try {
-        const agence = await agenceService.getAgence(id)
-        setValues(agence)
+        const agence = await agenceService.getAgence(id);
+        setValues(agence);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
 
     fetchAgence()
   }, []);
 
+  useEffect(() => {
+    if (values !== initialFieldValues) setIsLoading(false);
+  }, [values]);
+
   const HandleInputChange = (event) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setValues({
       ...values,
       [name]: value
@@ -39,16 +45,16 @@ function EditAgence() {
 
   const editAgence = async () => {
     let formData = new FormData();
-    formData.append('ville', values.ville)
+    formData.append('ville', values.ville);
 
     try {
-      const res = await agenceService.updateAgence(id, formData)
-      console.log(res)
+      const res = await agenceService.updateAgence(id, formData);
+      console.log(res);
       if (res) {
-        return navigate('/admin/agences')
+        return navigate('/admin/agences');
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -57,11 +63,17 @@ function EditAgence() {
   ]
 
   return (
-    <div className='flex flex-col items-end pt-3 px-5'>
-      <div className='grid grid-cols-1 w-full'>
-        <Card cardTitle={'Modifier un Agence'} labels={labels} item={values} editItem={editAgence} />
-      </div>
-    </div>
+    <>
+      {isLoading ?
+        <PreloaderSpinner />
+        :
+        <div className='flex flex-col items-end pt-3 px-5'>
+          <div className='grid grid-cols-1 w-full'>
+            <Card cardTitle={'Modifier un Agence'} labels={labels} item={values} editItem={editAgence} />
+          </div>
+        </div>
+      }
+    </>
   )
 }
 

@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { MdClose } from 'react-icons/md'
 import { AiOutlineDelete, AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
-// import Carton from 'assets/images/carton.png'
-// import Sachet from 'assets/images/sachet.jpg'
-// import Etiquette from 'assets/images/etiquette.jpg'
-// import Scotch from 'assets/images/scotch.png'
 import { usePanier } from 'context/PanierContext'
 import Button from 'components/Button';
+import { useNavigate } from 'react-router-dom';
 
 function Panier({ showPanier, setShowPanier }) {
+    const navigate = useNavigate();
 
     useEffect(() => {
         const panierId = localStorage.getItem("panier");
@@ -84,7 +82,7 @@ function Panier({ showPanier, setShowPanier }) {
                         const article = articles.find(a => a.id === panierArticle.id)
                         return (
                             <div className="flex justify-start items-center space-x-2 lg:space-x-7 p-4 rounded-3xl hover:bg-ozon-gray dark:hover:bg-ozon-dark-gray" key={index}>
-                                <img src={require(`assets/images/${article.image}`)} alt='' className='w-16 md:w-20' />
+                                <img src={require(`assets/images/1.png`)} alt='' className='w-16 md:w-20' />
                                 <div className="flex flex-1 justify-between items-center">
                                     <div className="">
                                         <p className='font-semibold text-base line-clamp-1 dark:text-white'>{article.nom}</p>
@@ -96,7 +94,7 @@ function Panier({ showPanier, setShowPanier }) {
                                                 style: 'px-1 py-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:focus:ring-ozon-yellow/30',
                                                 icon: <AiOutlineMinus />,
                                                 iconStyle: 'dark:text-black',
-                                                disabled: panierArticle.quantity == 1
+                                                disabled: panierArticle.quantity === 1
                                             }} />
                                             <span className='text-gray-700 dark:text-white'>{panierArticle.quantity}</span>
                                             <Button button={{
@@ -134,7 +132,7 @@ function Panier({ showPanier, setShowPanier }) {
                             }, 0)} Dhs
                         </span>
                     </div>
-                    <button type='button' className='flex justify-center items-center w-full px-10 py-3 space-x-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded-full whitespace-nowrap focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:text-black dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:disabled:hover:bg-ozon-yellow dark:focus:ring-ozon-yellow/30' disabled={panierArticles.length < 1}>
+                    <button type='button' className='flex justify-center items-center w-full px-10 py-3 space-x-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded-full whitespace-nowrap focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:text-black dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:disabled:hover:bg-ozon-yellow dark:focus:ring-ozon-yellow/30' onClick={() => navigate('/login')} disabled={panierArticles.length < 1}>
                         Checkout
                     </button>
                 </div>

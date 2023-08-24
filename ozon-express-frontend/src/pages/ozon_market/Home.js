@@ -1,48 +1,62 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CategorieService from 'services/CategorieService';
 import ArticleService from 'services/ArticleService';
 import HttpClient from 'services/client/HttpClient';
 import Hero from './Hero'
 import Articles from './components/Articles'
+import MarketSkeleton from './components/MarketSkeleton';
 
 function Home() {
     const categorieService = new CategorieService(HttpClient);
     const articleService = new ArticleService(HttpClient);
 
+    const [isLoading, setIsLoading] = useState(true);
     const [categories, setCategories] = useState([]);
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
-        fetchCategories()
-        fetchArticles()
+        const fetchCategories = async () => {
+            try {
+                const categories = await categorieService.getCategories();
+                setCategories(categories);
+                fetchArticles();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const fetchArticles = async () => {
+            try {
+                const articles = await articleService.getArticles();
+                setArticles(articles);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchCategories();
     }, []);
 
-    const fetchCategories = async () => {
-        try {
-            const categories = await categorieService.getCategories()
-            setCategories(categories)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    const fetchArticles = async () => {
-        try {
-            const articles = await articleService.getArticles()
-            setArticles(articles)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    useEffect(() => {
+        if (articles[0] && categories[0]) setIsLoading(false);
+    }, [articles, categories]);
 
     return (
-        <main className='mb-20'>
-            <Hero />
-            <Articles title={'Meilleurs articles'} articles={articles} />
-            {categories.map((categorie) => (
-                <Articles title={categorie.nom} articles={articles.filter((article) => article.categorieId === categorie.id)} />
-            ))}
-        </main>
+        <>
+            {isLoading ?
+                <MarketSkeleton />
+                :
+                <div className='market-bachground-image top-0'>
+                    <Hero />
+                    <div className="mb-20">
+                        <Articles title={'Meilleurs articles'} articles={articles} />
+                        {categories.map((categorie, index) => (
+                            <Articles title={categorie.nom} articles={articles.filter((article) => article.categorieId === categorie.id)} key={index} />
+                        ))}
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

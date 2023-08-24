@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import CategorieService from 'services/CategorieService';
 import HttpClient from 'services/client/HttpClient';
 import Card from '../components/Card'
+import PreloaderSpinner from 'components/PreloaderSpinner';
 
 const initialFieldValues = {
     nom: '',
@@ -10,11 +11,12 @@ const initialFieldValues = {
 
 function EditCategorie() {
     const navigate = useNavigate();
-    const { id } = useParams()
+    const { id } = useParams();
 
-    const categorieService = new CategorieService(HttpClient)
+    const categorieService = new CategorieService(HttpClient);
 
-    const [values, setValues] = useState(initialFieldValues)
+    const [isLoading, setIsLoading] = useState(true);
+    const [values, setValues] = useState(initialFieldValues);
 
     useEffect(() => {
         const fetchCategorie = async () => {
@@ -29,8 +31,12 @@ function EditCategorie() {
         fetchCategorie()
     }, []);
 
+    useEffect(() => {
+        if (values !== initialFieldValues) setIsLoading(false);
+    }, [values]);
+
     const HandleInputChange = (event) => {
-        const { name, value } = event.target
+        const { name, value } = event.target;
         setValues({
             ...values,
             [name]: value
@@ -39,15 +45,15 @@ function EditCategorie() {
 
     const editCategorie = async () => {
         let formData = new FormData();
-        formData.append('nom', values.nom)
+        formData.append('nom', values.nom);
 
         try {
-            const res = await categorieService.updateCategorie(id, formData)
+            const res = await categorieService.updateCategorie(id, formData);
             if (res.ok) {
-                return navigate('/admin/categories')
+                return navigate('/admin/categories');
             }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 
@@ -56,11 +62,17 @@ function EditCategorie() {
     ]
 
     return (
-        <div className='flex flex-col items-end pt-3 px-5'>
-            <div className='grid grid-cols-1 w-full'>
-                <Card cardTitle={'Modifier un Categorie'} labels={labels} item={values} editItem={editCategorie} />
-            </div>
-        </div>
+        <>
+            {isLoading ?
+                <PreloaderSpinner />
+                :
+                <div className='flex flex-col items-end pt-3 px-5'>
+                    <div className='grid grid-cols-1 w-full'>
+                        <Card cardTitle={'Modifier un Categorie'} labels={labels} item={values} editItem={editCategorie} />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

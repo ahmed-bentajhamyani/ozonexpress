@@ -1,5 +1,5 @@
 class BlogService {
-    URL = "https://localhost:7094/api/Blog"
+    URL = "Blog/"
 
     constructor(httpClient) {
         this.httpClient = httpClient
@@ -8,20 +8,36 @@ class BlogService {
     async getBlogs() {
         try {
             const response = await this.httpClient.get(this.URL)
-            return response.json()
+            if (response.ok) {
+                return response.json();
+            } else if (response?.status === 401) {
+                throw new Error('Unauthorized');
+            } else {
+                throw new Error('Fetch failed. Please try again later.');
+            }
         } catch (error) {
-            console.error(error)
-            throw error
+            if (error?.message === 'Failed to fetch')
+                throw new Error('No Server Response');
+
+            throw error;
         }
     }
 
     async getBlog(id) {
         try {
-            const response = await this.httpClient.get(this.URL + '/' + id)
-            return response.json()
+            const response = await this.httpClient.get(this.URL + id)
+            if (response.ok) {
+                return response.json();
+            } else if (response?.status === 401) {
+                throw new Error('Unauthorized');
+            } else {
+                throw new Error('Fetch failed. Please try again later.');
+            }
         } catch (error) {
-            console.error(error)
-            throw error
+            if (error?.message === 'Failed to fetch')
+                throw new Error('No Server Response');
+
+            throw error;
         }
     }
 
@@ -37,7 +53,7 @@ class BlogService {
 
     async updateBlog(id, blog) {
         try {
-            const response = await this.httpClient.put(this.URL + '/' + id, blog)
+            const response = await this.httpClient.put(this.URL + id, blog)
             return response
         } catch (error) {
             console.error(error)
@@ -47,7 +63,7 @@ class BlogService {
 
     async deleteBlog(id) {
         try {
-            const response = await this.httpClient.delete(this.URL + '/' + id)
+            const response = await this.httpClient.delete(this.URL + id)
             return response
         } catch (error) {
             console.error(error)
