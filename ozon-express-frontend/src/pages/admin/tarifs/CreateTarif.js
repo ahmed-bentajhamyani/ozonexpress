@@ -29,7 +29,7 @@ function CreateTarif() {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
 
@@ -59,7 +59,7 @@ function CreateTarif() {
         return navigate('/admin/tarifs')
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
 

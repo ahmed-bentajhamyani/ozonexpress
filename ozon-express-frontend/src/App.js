@@ -66,7 +66,7 @@ function App() {
           setUser(user);
         }
       } catch (error) {
-        console.error(error)
+        console.log(error)
       }
 
       setUserFetched(true)

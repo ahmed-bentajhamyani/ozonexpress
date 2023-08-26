@@ -40,7 +40,7 @@ function FAQs() {
                 setFAQs(faqs => faqs.filter(faq => faq.id !== id));
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

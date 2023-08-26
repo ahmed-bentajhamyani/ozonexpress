@@ -5,8 +5,7 @@ import FAQService from 'services/FAQService';
 import HttpClient from 'services/client/HttpClient';
 
 function FAQs({ setFaqsLoaded, isLoaded }) {
-
-    const faqService = new FAQService(HttpClient)
+    const faqService = new FAQService(HttpClient);
 
     const [faqs, setFAQs] = useState([]);
 
@@ -21,7 +20,7 @@ function FAQs({ setFaqsLoaded, isLoaded }) {
                     setFAQs(faqs);
                 }
             } catch (error) {
-                showBoundary(error)
+                showBoundary(error);
             }
         }
 

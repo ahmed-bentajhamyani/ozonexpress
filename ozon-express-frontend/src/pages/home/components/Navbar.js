@@ -9,7 +9,6 @@ import { useDarkMode } from 'context/DarkModeContext'
 import { useNavigate } from 'react-router-dom'
 import Button from 'components/Button'
 
-
 function Navbar() {
     const navigate = useNavigate();
 
@@ -81,7 +80,8 @@ function Navbar() {
                         </div>
 
                         {/* Logo */}
-                        <Link smooth to={"home"} onClick={() => setNavbarOpen(false)} className="cursor-pointer">
+                        <Link 
+                        smooth to={"home"} onClick={() => setNavbarOpen(false)} className="cursor-pointer">
                             <img src={OzonLogo} className='h-11 lg:h-auto' alt="Logo" />
                         </Link>
                     </div>

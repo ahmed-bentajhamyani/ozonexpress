@@ -21,7 +21,7 @@ function Home() {
                 setCategories(categories);
                 fetchArticles();
             } catch (error) {
-                console.error(error);
+                console.log(error);
             }
         }
 
@@ -30,7 +30,7 @@ function Home() {
                 const articles = await articleService.getArticles();
                 setArticles(articles);
             } catch (error) {
-                console.error(error);
+                console.log(error);
             }
         }
 

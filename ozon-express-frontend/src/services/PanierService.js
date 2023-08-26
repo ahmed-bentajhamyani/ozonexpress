@@ -46,7 +46,7 @@ class PanierService {
             const response = await this.httpClient.post(this.URL, panier)
             return response
         } catch (error) {
-            console.error(error)
+            console.log(error)
             throw error
         }
     }
@@ -56,7 +56,7 @@ class PanierService {
             const response = await this.httpClient.put(this.URL + id, panier)
             return response
         } catch (error) {
-            console.error(error)
+            console.log(error)
             throw error
         }
     }
@@ -66,7 +66,7 @@ class PanierService {
             const response = await this.httpClient.delete(this.URL + id)
             return response
         } catch (error) {
-            console.error(error)
+            console.log(error)
             throw error
         }
     }

@@ -30,7 +30,7 @@ function EditBlog() {
                 setValues(blog);
                 setArticle(blog.article);
             } catch (error) {
-                console.error(error);
+                console.log(error);
             }
         }
 
@@ -92,7 +92,7 @@ function EditBlog() {
                 return navigate('/admin/blogs');
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 

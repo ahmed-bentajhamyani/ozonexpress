@@ -45,7 +45,7 @@ function EditArticle() {
             const categories = await categorieService.getCategories();
             setCategories(categories);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 
@@ -54,7 +54,7 @@ function EditArticle() {
             const article = await articleService.getArticle(id);
             setValues(article);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 
@@ -112,7 +112,7 @@ function EditArticle() {
                 return navigate('/admin/articles');
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 

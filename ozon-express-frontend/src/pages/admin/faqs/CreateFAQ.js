@@ -44,7 +44,7 @@ function CreateFAQ() {
                 return navigate('/admin/faqs');
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 

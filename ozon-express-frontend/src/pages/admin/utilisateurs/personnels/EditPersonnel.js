@@ -26,7 +26,7 @@ function EditPersonnel() {
         const user = await userService.getUser(id);
         setValues(user);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
 
@@ -57,7 +57,7 @@ function EditPersonnel() {
         return navigate('/admin/personnels');
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 

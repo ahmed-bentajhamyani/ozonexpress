@@ -38,7 +38,7 @@ function Personnels() {
                 setUsers(users => users.filter(user => user.id !== id));
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

@@ -65,7 +65,7 @@ function Tarifs() {
         setTarifs(tarifs => tarifs.filter(tarif => tarif.id !== id));
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
 

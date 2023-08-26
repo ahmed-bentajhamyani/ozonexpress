@@ -8,9 +8,8 @@ export function usePanier() {
 }
 
 export function PanierProvider({ children }) {
-
   const [showPanier, setShowPanier] = useState(false);
-  const [panierArticles, setPanierArticles] = useState([])
+  const [panierArticles, setPanierArticles] = useState([]);
 
   useEffect(() => {
     if (showPanier) {
@@ -24,10 +23,6 @@ export function PanierProvider({ children }) {
     (quantity, item) => item.quantity + quantity,
     0
   )
-
-  // useEffect(() => {
-  //   console.log(panierArticles)
-  // }, [panierArticles])
 
   // const openCart = () => setIsOpen(true)
   // const closeCart = () => setIsOpen(false)

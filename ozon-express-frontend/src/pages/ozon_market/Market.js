@@ -20,7 +20,7 @@ function Market() {
                 const articles = await articleService.getArticles();
                 setArticles(articles);
             } catch (error) {
-                console.error(error);
+                console.log(error);
             }
         }
 
@@ -29,7 +29,6 @@ function Market() {
 
     const HandleInputChange = (event) => {
         const { value } = event.target;
-        console.log(value)
         if (value?.length > 2) {
             setSearchBoxOpen(true);
             setIsLoading(true);

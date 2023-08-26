@@ -42,7 +42,7 @@ function CreateCategorie() {
                 return navigate('/admin/categories');
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 

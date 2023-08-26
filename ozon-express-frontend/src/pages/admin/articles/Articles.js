@@ -69,7 +69,7 @@ function Articles() {
                 setArticles(articles => articles.filter(article => article.id !== id));
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

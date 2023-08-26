@@ -15,7 +15,7 @@ function Testimonials({ setTestimonialsLoaded, isLoaded }) {
                 const commentaires = await commentaireService.getCommentaires()
                 setCommentaires(commentaires)
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
 

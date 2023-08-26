@@ -32,7 +32,7 @@ function Tarifs({ setTarifsLoaded, isLoaded }) {
       const tarifs = await tarifService.getTarifs()
       setTarifs(tarifs)
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
 
@@ -53,7 +53,7 @@ function Tarifs({ setTarifsLoaded, isLoaded }) {
       const agencesArr = agences.filter(agence => AgenceArrIds.includes(agence.id));
       setAgencesArr(agencesArr);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 

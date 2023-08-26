@@ -12,7 +12,7 @@ import { usePanier } from 'context/PanierContext'
 import SearchBox from 'components/SearchBox'
 import { isMobile } from 'react-device-detect'
 import SearchArticleCard from './SearchArticleCard'
-import SearchArticleCardSkeleton from './SearchArticleCardSkeleton'
+import SearchArticleCardSkeleton from './ArticleCardSkeleton'
 
 function Navbar({ HandleInputChange, searchBoxOpen, isLoading, searchResult }) {
     const navigate = useNavigate();

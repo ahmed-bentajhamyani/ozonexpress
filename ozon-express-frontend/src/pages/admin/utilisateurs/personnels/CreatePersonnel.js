@@ -48,7 +48,7 @@ function CreatePersonnel() {
                 return navigate('/admin/personnels')
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

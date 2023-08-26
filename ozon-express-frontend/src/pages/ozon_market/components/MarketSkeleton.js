@@ -37,7 +37,7 @@ function MarketSkeleton() {
                     </div>
                 ))}
             </div>
-        </div >
+        </div>
     )
 }
 

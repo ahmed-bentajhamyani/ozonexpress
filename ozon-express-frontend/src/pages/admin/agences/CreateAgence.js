@@ -42,7 +42,7 @@ function CreateAgence() {
         return navigate('/admin/agences');
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 

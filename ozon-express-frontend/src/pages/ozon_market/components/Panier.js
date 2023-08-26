@@ -1,54 +1,47 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MdClose } from 'react-icons/md'
 import { AiOutlineDelete, AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import { usePanier } from 'context/PanierContext'
 import Button from 'components/Button';
 import { useNavigate } from 'react-router-dom';
+import ArticleCardSkeleton from './ArticleCardSkeleton';
+import ArticleService from 'services/ArticleService';
+import HttpClient from 'services/client/HttpClient';
 
 function Panier({ showPanier, setShowPanier }) {
     const navigate = useNavigate();
 
+    const articleService = new ArticleService(HttpClient);
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [articles, setArticles] = useState([]);
+
     useEffect(() => {
-        const panierId = localStorage.getItem("panier");
-        if (panierId == null) {
-
+        const fetchArticles = async () => {
+            try {
+                const articles = await articleService.getArticles();
+                setArticles(articles);
+            } catch (error) {
+                console.log(error);
+            }
         }
-    });
 
-    const articles = [
-        {
-            id: 1,
-            image: 'carton.png',
-            nom: 'Emballage Cartons',
-            description: 'While most people enjoy casino gambling, sports betting',
-            prix: 15,
-            quantity: 2,
-        },
-        {
-            id: 2,
-            image: 'sachet.jpg',
-            nom: 'Emballage Sachets',
-            description: 'While most people enjoy casino gambling, sports betting',
-            prix: 36,
-            quantity: 3,
-        },
-        {
-            id: 3,
-            image: 'etiquette.jpg',
-            nom: 'Emballage étiquettes',
-            description: 'While most people enjoy casino gambling, sports betting',
-            prix: 20,
-            quantity: 3,
-        },
-        {
-            id: 4,
-            image: 'scotch.png',
-            nom: 'Emballage scotcher',
-            description: 'While most people enjoy casino gambling, sports betting, While most people enjoy casino gambling, sports betting, While most people enjoy casino gambling, sports betting',
-            prix: 6,
-            quantity: 1,
+        fetchArticles();
+    }, []);
+
+    useEffect(() => {
+        if (articles[0]) {
+            console.log(articles);
+            setIsLoading(false);
         }
-    ]
+    }, [articles]);
+
+    // useEffect(() => {
+    //     const panierId = localStorage.getItem("panier");
+    //     if (panierId == null) {
+
+    //     }
+    // }, []);
 
     const { cartQuantity, panierArticles, increaseCartQuantity, decreaseCartQuantity, removeFromCart } = usePanier();
 
@@ -78,47 +71,53 @@ function Panier({ showPanier, setShowPanier }) {
                         }} />
                     </div>
 
-                    {panierArticles.map((panierArticle, index) => {
-                        const article = articles.find(a => a.id === panierArticle.id)
-                        return (
-                            <div className="flex justify-start items-center space-x-2 lg:space-x-7 p-4 rounded-3xl hover:bg-ozon-gray dark:hover:bg-ozon-dark-gray" key={index}>
-                                <img src={require(`assets/images/1.png`)} alt='' className='w-16 md:w-20' />
-                                <div className="flex flex-1 justify-between items-center">
-                                    <div className="">
-                                        <p className='font-semibold text-base line-clamp-1 dark:text-white'>{article.nom}</p>
-                                        <p className='text-xs lg:text-sm line-clamp-1 dark:text-white'>{article.description}</p>
+                    {isLoading ?
+                        <ArticleCardSkeleton />
+                        :
+                        <>
+                            {panierArticles.map((panierArticle, index) => {
+                                const article = articles.find(a => a.id === panierArticle.id)
+                                return (
+                                    <div className="flex justify-start items-center space-x-2 lg:space-x-7 p-4 rounded-3xl hover:bg-ozon-gray dark:hover:bg-ozon-dark-gray" key={index}>
+                                        <img src={article.imageSrc} alt='' className='w-16 md:w-20' />
+                                        <div className="flex flex-1 justify-between items-center">
+                                            <div className="">
+                                                <p className='font-semibold text-base line-clamp-1 dark:text-white'>{article.nom}</p>
+                                                <p className='text-xs lg:text-sm line-clamp-1 dark:text-white'>{article.description}</p>
 
-                                        <div className="flex justify-start items-center text-xs lg:text-sm space-x-2">
-                                            <Button button={{
-                                                action: () => decreaseCartQuantity(article.id),
-                                                style: 'px-1 py-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:focus:ring-ozon-yellow/30',
-                                                icon: <AiOutlineMinus />,
-                                                iconStyle: 'dark:text-black',
-                                                disabled: panierArticle.quantity === 1
-                                            }} />
-                                            <span className='text-gray-700 dark:text-white'>{panierArticle.quantity}</span>
-                                            <Button button={{
-                                                action: () => increaseCartQuantity(article.id),
-                                                style: 'px-1 py-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:focus:ring-ozon-yellow/30',
-                                                icon: <AiOutlinePlus />,
-                                                iconStyle: 'dark:text-black',
-                                                disabled: panierArticle.quantity + 1 > article.quantity
-                                            }} />
+                                                <div className="flex justify-start items-center text-xs lg:text-sm space-x-2">
+                                                    <Button button={{
+                                                        action: () => decreaseCartQuantity(article.id),
+                                                        style: 'px-1 py-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:focus:ring-ozon-yellow/30',
+                                                        icon: <AiOutlineMinus />,
+                                                        iconStyle: 'dark:text-black',
+                                                        disabled: panierArticle.quantity === 1
+                                                    }} />
+                                                    <span className='text-gray-700 dark:text-white'>{panierArticle.quantity}</span>
+                                                    <Button button={{
+                                                        action: () => increaseCartQuantity(article.id),
+                                                        style: 'px-1 py-1 text-white bg-ozon-red hover:bg-ozon-red-tone cursor-pointer rounded focus:ring-4 focus:outline-none focus:ring-ozon-red-tint disabled:opacity-50 disabled:cursor-default disabled:hover:bg-ozon-red disabled:focus:ring-0 dark:bg-ozon-yellow dark:hover:bg-ozon-yellow-tone dark:focus:ring-ozon-yellow/30',
+                                                        icon: <AiOutlinePlus />,
+                                                        iconStyle: 'dark:text-black',
+                                                        disabled: panierArticle.quantity + 1 > article.quantity
+                                                    }} />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col justify-center items-center">
+                                                <p className='font-semibold text-sm md:text-lg whitespace-nowrap lg:group-hover:hidden dark:text-white'>{article.prix * panierArticle.quantity} Dhs</p>
+                                                <Button button={{
+                                                    action: () => removeFromCart(article.id),
+                                                    style: ' cursor-pointer hover:text-ozon-red dark:text-white dark:hover:text-ozon-yellow',
+                                                    icon: <AiOutlineDelete />,
+                                                    iconStyle: 'text-xl'
+                                                }} />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col justify-center items-center">
-                                        <p className='font-semibold text-sm md:text-lg whitespace-nowrap lg:group-hover:hidden dark:text-white'>{article.prix * panierArticle.quantity} Dhs</p>
-                                        <Button button={{
-                                            action: () => removeFromCart(article.id),
-                                            style: ' cursor-pointer hover:text-ozon-red dark:text-white dark:hover:text-ozon-yellow',
-                                            icon: <AiOutlineDelete />,
-                                            iconStyle: 'text-xl'
-                                        }} />
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
+                                )
+                            })}
+                        </>
+                    }
                 </div>
 
                 {/*footer*/}

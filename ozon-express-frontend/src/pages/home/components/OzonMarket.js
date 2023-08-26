@@ -16,7 +16,7 @@ function OzonMarket({ setOzonMarketLoaded, isLoaded }) {
                 const articles = await articleService.getArticles()
                 setArticles(articles)
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
 

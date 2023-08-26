@@ -31,7 +31,7 @@ function OneBlog() {
             const blog = await blogService.getBlog(id)
             setBlog(blog)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 
@@ -40,7 +40,7 @@ function OneBlog() {
             const articles = await articleService.getArticles()
             setArticles(articles)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 
@@ -49,7 +49,7 @@ function OneBlog() {
             const blogs = await blogService.getBlogs()
             setBlogs(blogs)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

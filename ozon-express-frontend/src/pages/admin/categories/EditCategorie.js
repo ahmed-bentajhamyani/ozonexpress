@@ -24,7 +24,7 @@ function EditCategorie() {
                 const categorie = await categorieService.getCategorie(id)
                 setValues(categorie)
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
 
@@ -53,7 +53,7 @@ function EditCategorie() {
                 return navigate('/admin/categories');
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 

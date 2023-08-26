@@ -79,7 +79,7 @@ function CreateBlog() {
                 return navigate('/admin/blogs');
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     }
 

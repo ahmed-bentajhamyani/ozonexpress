@@ -40,7 +40,7 @@ class ArticleService {
             const response = await this.httpClient.post(this.URL, article)
             return response
         } catch (error) {
-            console.error(error)
+            console.log(error)
             throw error
         }
     }
@@ -50,7 +50,7 @@ class ArticleService {
             const response = await this.httpClient.put(this.URL + id, article)
             return response
         } catch (error) {
-            console.error(error)
+            console.log(error)
             throw error
         }
     }
@@ -60,7 +60,7 @@ class ArticleService {
             const response = await this.httpClient.delete(this.URL + id)
             return response
         } catch (error) {
-            console.error(error)
+            console.log(error)
             throw error
         }
     }

@@ -1,9 +1,8 @@
-import { Link as SmoothLink } from 'react-scroll'
+import { Link } from 'react-scroll'
 import OzonLogo from 'assets/brand/ozonexpress_logo.png'
 import { FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
 
 function Footer() {
-
     const Links = [
         { titre: "Services", url: 'services' },
         { titre: "Comment ça marche?", url: 'faqs' },
@@ -26,9 +25,9 @@ function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     <div className="flex flex-col justify-start items-start mb-8 lg:mb-0">
                         {/* Logo */}
-                        <SmoothLink smooth to={"home"} className="mb-4 lg:mb-0 cursor-pointer">
+                        <Link smooth to={"home"} className="mb-4 lg:mb-0 cursor-pointer">
                             <img src={OzonLogo} className='' alt="Logo" />
-                        </SmoothLink>
+                        </Link>
 
                         <p className='text-sm xl-text-base mt-5 lg:mt-7 w-52 dark:text-white'>Découvrez notre processus logistique étape par étape pour une expérience fluide.</p>
 
@@ -50,7 +49,7 @@ function Footer() {
                         <ul className="mt-3">
                             {Links.map((link, index) => (
                                 <li className="mb-3" key={index}>
-                                    <SmoothLink smooth to={link.url} className={`text-sm xl-text-base cursor-pointer whitespace-nowrap hover:text-ozon-red duration-300 select-none dark:hover:text-ozon-red ${link.style || 'dark:text-white'}`}>{link.titre}</SmoothLink>
+                                    <Link smooth to={link.url} className={`text-sm xl-text-base cursor-pointer whitespace-nowrap hover:text-ozon-red duration-300 select-none dark:hover:text-ozon-red ${link.style || 'dark:text-white'}`}>{link.titre}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -62,7 +61,7 @@ function Footer() {
                             <ul className="mt-4">
                                 {Politiques.map((politique, index) => (
                                     <li className="mb-3" key={index}>
-                                        <SmoothLink smooth to={politique.url} className="text-sm xl-text-base cursor-pointer whitespace-nowrap hover:text-ozon-red duration-300 select-none dark:text-white dark:hover:text-ozon-red">{politique.titre}</SmoothLink>
+                                        <Link smooth to={politique.url} className="text-sm xl-text-base cursor-pointer whitespace-nowrap hover:text-ozon-red duration-300 select-none dark:text-white dark:hover:text-ozon-red">{politique.titre}</Link>
                                     </li>
                                 ))}
                             </ul>

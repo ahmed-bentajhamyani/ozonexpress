@@ -24,7 +24,7 @@ function EditAgence() {
         const agence = await agenceService.getAgence(id);
         setValues(agence);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
 
@@ -54,7 +54,7 @@ function EditAgence() {
         return navigate('/admin/agences');
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 

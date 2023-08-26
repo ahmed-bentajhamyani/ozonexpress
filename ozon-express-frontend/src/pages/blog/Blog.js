@@ -19,7 +19,7 @@ function Blog() {
                 const blogs = await blogService.getBlogs();
                 setBlogs(blogs);
             } catch (error) {
-                console.error(error);
+                console.log(error);
             }
         }
 

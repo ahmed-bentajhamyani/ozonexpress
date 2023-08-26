@@ -36,7 +36,7 @@ function Commentaires() {
                 setCommentaires(commentaires => commentaires.filter(commentaire => commentaire.id !== id));
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

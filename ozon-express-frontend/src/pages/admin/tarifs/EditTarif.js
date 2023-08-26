@@ -35,7 +35,7 @@ function EditTarif() {
       const agences = await agenceService.getAgences();
       setAgences(agences);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -44,7 +44,7 @@ function EditTarif() {
       const tarif = await tarifService.getTarif(id);
       setValues(tarif);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -72,7 +72,7 @@ function EditTarif() {
         return navigate('/admin/tarifs');
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 

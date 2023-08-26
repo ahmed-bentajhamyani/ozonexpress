@@ -5,17 +5,20 @@ import ArticleDetails from './components/ArticleDetails'
 import ArticleService from 'services/ArticleService'
 import CategorieService from 'services/CategorieService'
 import HttpClient from 'services/client/HttpClient'
+import OneArticleSkeleton from './components/OneArticleSkeleton'
 
 function Article() {
-    const { id } = useParams()
+    const { id } = useParams();
 
-    const articleService = new ArticleService(HttpClient)
+    const articleService = new ArticleService(HttpClient);
 
-    const [article, setArticle] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [article, setArticle] = useState();
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
-        fetchArticle()
+        fetchArticle();
     }, []);
 
     const fetchArticle = async () => {
@@ -35,45 +38,54 @@ function Article() {
                 prix: article.prix,
                 quantite: article.quantite,
                 "categorie": categorie
-            }
+            };
 
-            setArticle(newArticle)
+            setArticle(newArticle);
         } catch (error) {
-            console.error(error)
+            console.log(error);
         }
     }
 
     async function getCategorieById(id) {
-        const categorieService = new CategorieService(HttpClient)
+        const categorieService = new CategorieService(HttpClient);
         try {
-            const res = await categorieService.getCategorie(id)
-            return res.nom
+            const res = await categorieService.getCategorie(id);
+            return res.nom;
         } catch (error) {
-            console.error(error)
+            console.log(error);
         }
     }
 
     const fetchArticlesFromCategorie = async (article) => {
         try {
-            const articles = await articleService.getArticles()
-            setArticles(articles.filter((art) => art.categorieId === article.categorieId && art.id !== article.id))
+            const articles = await articleService.getArticles();
+            setArticles(articles.filter((art) => art.categorieId === article.categorieId && art.id !== article.id));
         } catch (error) {
-            console.error(error)
+            console.log(error);
         }
     }
 
-    return (
-        <div className=''>
-            {article &&
-                <ArticleDetails article={article} />
-            }
-            {articles.length > 0 &&
-                <div className="mt-10">
-                    <Articles title={'Plus de cette catégorie'} articles={articles} />
-                </div>
-            }
-        </div>
+    useEffect(() => {
+        if (article) setIsLoading(false);
+    }, [article, articles]);
 
+    return (
+        <>
+            {isLoading ?
+                <OneArticleSkeleton />
+                :
+                <>
+                    {article &&
+                        <ArticleDetails article={article} />
+                    }
+                    {articles.length > 0 &&
+                        <div className="mt-10">
+                            <Articles title={'Plus de cette catégorie'} articles={articles} />
+                        </div>
+                    }
+                </>
+            }
+        </>
     )
 }
 

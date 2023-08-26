@@ -38,7 +38,7 @@ function Categories() {
                 setCategories(categories => categories.filter(categorie => categorie.id !== id));
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

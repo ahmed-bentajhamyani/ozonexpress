@@ -18,7 +18,7 @@ function Agences({ setAgencesLoaded, isLoaded }) {
                 const agences = await agenceService.getAgences()
                 setAgences(agences)
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
 

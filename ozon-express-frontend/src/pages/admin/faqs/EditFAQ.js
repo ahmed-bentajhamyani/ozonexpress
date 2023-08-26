@@ -25,7 +25,7 @@ function EditFAQ() {
                 const faq = await faqService.getFAQ(id)
                 setValues(faq)
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
 
@@ -56,7 +56,7 @@ function EditFAQ() {
                 return navigate('/admin/faqs')
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

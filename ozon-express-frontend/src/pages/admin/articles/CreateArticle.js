@@ -34,7 +34,7 @@ function CreateArticle() {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error(error)
+        console.log(error)
       }
     }
 
@@ -97,7 +97,7 @@ function CreateArticle() {
         return navigate('/admin/articles')
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
 

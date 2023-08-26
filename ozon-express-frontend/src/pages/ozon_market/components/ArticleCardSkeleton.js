@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SearchArticleCardSkeleton() {
+function ArticleCardSkeleton() {
     return (
         <div className='animate-pulse'>
             {Array.from({ length: 3 }, (_, index) => (
@@ -18,4 +18,4 @@ function SearchArticleCardSkeleton() {
     )
 }
 
-export default SearchArticleCardSkeleton
+export default ArticleCardSkeleton

@@ -13,9 +13,12 @@ const initialFieldValues = {
 }
 
 function Login() {
-    const [values, setValues] = useState(initialFieldValues);
     const navigate = useNavigate();
+
+    const [values, setValues] = useState(initialFieldValues);
+
     const { setUser, setJwtToken } = useAuth();
+
     const [errMsg, setErrMsg] = useState('');
     const errRef = useRef();
 
@@ -48,6 +51,10 @@ function Login() {
         }
     }
 
+    const goTo = (route) => {
+        navigate(route);
+    }
+
     const labels = [
         { type: "email", name: "email", placeholder: 'name@company.com', onChange: HandleInputChange },
         { type: "password", name: "password", placeholder: "••••••••", onChange: HandleInputChange },
@@ -58,9 +65,10 @@ function Login() {
             <div className="flex items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
                 <div className="flex flex-col justify-center items-center bg-ozon-gray rounded-3xl dark:bg-ozon-dark-gray">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <Link to={"home"} className="flex justify-center cursor-pointer">
+                        {/* Logo */}
+                        <div onClick={() => navigate('/')} className="flex justify-center cursor-pointer">
                             <img src={OzonLogo} className='h-11 lg:h-auto' alt="Logo" />
-                        </Link>
+                        </div>
 
                         <div ref={errRef} className={`alert bg-rose-600 ${!errMsg && 'hidden'}`}>
                             <p className='flex items-center space-x-1 text-white'>

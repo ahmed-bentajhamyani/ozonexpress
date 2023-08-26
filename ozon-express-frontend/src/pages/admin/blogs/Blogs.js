@@ -42,7 +42,7 @@ function Blogs() {
                 setBlogs(blogs => blogs.filter(blog => blog.id !== id));
             }
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 
